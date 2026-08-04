@@ -1,0 +1,66 @@
+import { Heart } from 'lucide-react'
+import React from 'react'
+import { FaInstagram, FaTwitter } from 'react-icons/fa'
+import { FaFacebook } from 'react-icons/fa6'
+import { Link } from 'react-router-dom'
+
+function Footer() {
+    return (
+        <footer className="border-t border-red-100 bg-white">
+            <div className="mx-auto max-w-6xl px-6 md:pb-6 pb-20 pt-12">
+                <div className="grid grid-cols-1 gap-10 sm:grid-cols-4">
+                    <div>
+                        <div className="flex items-center gap-2 text-lg font-extrabold text-gray-900">
+                            <Heart className="h-5 w-5 fill-red-600 text-red-600" />
+                            Blood Find BD
+                        </div>
+                        <p className="mt-3 text-sm text-gray-500">
+                            Connecting donors and recipients across Bangladesh, instantly.
+                        </p>
+                    </div>
+
+                    <div>
+                        <h4 className="font-semibold text-gray-900">Platform</h4>
+                        <ul className="mt-3 space-y-2 text-sm text-gray-500">
+                            <li><Link to="/donate-request" className="hover:text-red-600">I Need Blood</Link></li>
+                            <li><Link to="/donate" className="hover:text-red-600">I Want to Donate</Link></li>
+                            <li><Link to="/available-donors" className="hover:text-red-600">Available Donors</Link></li>
+                            <li><Link to="/blood-information" className="hover:text-red-600">Blood Information</Link></li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h4 className="font-semibold text-gray-900">Company</h4>
+                        <ul className="mt-3 space-y-2 text-sm text-gray-500">
+                            <li><Link to="/about" className="hover:text-red-600">About Us</Link></li>
+                            <li><Link to="/contact" className="hover:text-red-600">Contact</Link></li>
+                            <li><Link to="/privacy" className="hover:text-red-600">Privacy Policy</Link></li>
+                            <li><Link to="/terms" className="hover:text-red-600">Terms of Service</Link></li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h4 className="font-semibold text-gray-900">Follow Us</h4>
+                        <div className="mt-3 flex gap-3">
+                            <a href="#" className="flex h-9 w-9 items-center justify-center rounded-full bg-red-50 text-red-600 hover:bg-red-600 hover:text-white">
+                                <FaFacebook className="h-4 w-4" />
+                            </a>
+                            <a href="#" className="flex h-9 w-9 items-center justify-center rounded-full bg-red-50 text-red-600 hover:bg-red-600 hover:text-white">
+                                <FaTwitter className="h-4 w-4" />
+                            </a>
+                            <a href="#" className="flex h-9 w-9 items-center justify-center rounded-full bg-red-50 text-red-600 hover:bg-red-600 hover:text-white">
+                                <FaInstagram className="h-4 w-4" />
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="mt-10 border-t border-gray-100 pt-6 text-center text-xs text-gray-400">
+                    © {new Date().getFullYear()} Blood Find BD. All rights reserved.
+                </div>
+            </div>
+        </footer>
+    )
+}
+
+export default Footer
