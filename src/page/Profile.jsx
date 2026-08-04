@@ -15,6 +15,7 @@ import { RiDropFill } from "react-icons/ri";
 import { FaMedal } from "react-icons/fa";
 import { AuthContext } from "../providers/AuthProviders";
 import toast from "react-hot-toast";
+import { MdOutlineManageAccounts } from "react-icons/md";
 
 const bloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
 
@@ -82,11 +83,11 @@ const Profile = () => {
       }
 
       // TODO: save phone / bloodGroup / district / area / gender to your database
-      // await fetch(`${import.meta.env.VITE_API_URL}/users/${user.uid}`, {
-      //     method: "PATCH",
-      //     headers: { "Content-Type": "application/json" },
-      //     body: JSON.stringify(form),
-      // });
+      await fetch(`${import.meta.env.VITE_API_URL}/users/${user.uid}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
 
       toast.success("প্রোফাইল আপডেট হয়েছে");
       setEditing(false);
@@ -125,20 +126,29 @@ const Profile = () => {
           <div className="relative mx-auto w-fit">
             {loading ? (
               <div className="h-24 w-24 animate-pulse rounded-full bg-gray-200" />
-            ) : user?.photoURL ? (
-              <img
-                src={user.photoURL}
-                alt={user.displayName || "Profile"}
-                className="h-24 w-24 rounded-full border-4 border-red-100 object-cover"
-              />
-            ) : (
-              <div className="flex h-24 w-24 items-center justify-center rounded-full border-4 border-red-100 bg-red-600 text-3xl font-bold text-white">
-                {(user?.displayName || user?.email || "U").charAt(0).toUpperCase()}
-              </div>
-            )}
-            <span className="absolute bottom-0 right-0 flex h-8 w-8 items-center justify-center rounded-full bg-red-600 text-xs font-bold text-white shadow-lg">
-              {form.bloodGroup}
-            </span>
+            ) :
+              !user ? <MdOutlineManageAccounts className="text-[90px] bg-red-600 rounded-full text-white" />
+                :
+                user?.photoURL ? (
+                  <img
+                    src={user.photoURL}
+                    alt={user.displayName || "Profile"}
+                    referrerPolicy="no-referrer"
+                    className="h-24 w-24 rounded-full border-4 border-red-100 object-cover"
+                  />
+                ) : (
+                  <div className="flex h-24 w-24 items-center justify-center rounded-full border-4 border-red-100 bg-red-600 text-4xl font-bold text-white">
+                    {(user?.displayName || user?.email || "U").charAt(0).toUpperCase()}
+                  </div>
+                )}
+            {
+              user ?
+                <span className="absolute bottom-0 right-0 flex h-8 w-8 items-center justify-center rounded-full bg-red-600 text-xs font-bold text-white shadow-lg">
+                  {form.bloodGroup}
+                </span>
+                :
+                ''
+            }
           </div>
 
           <h1 className="mt-4 flex items-center justify-center gap-2 text-xl font-extrabold text-gray-900">

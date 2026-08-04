@@ -372,22 +372,26 @@ const TopNavbar = () => {
 
                     <div>
 
-                        <NavLink to='/profile' className="hidden md:block rounded-full text-gray-700  transition-colors"
+                        <NavLink
+                            to="/profile"
+                            className="hidden md:block rounded-full text-gray-700 transition-colors"
                         >
                             <button className="flex">
                                 {loading ? (
-                                    <div className=" w-10 h-10 bg-gray-200 rounded-full animate-pulse"></div>
-                                ) : user?.photoURL ? (
+                                    <div className="w-10 h-10 bg-gray-200 rounded-full animate-pulse"></div>
+                                ) : !user ? (
+                                    <IoPersonCircleOutline className="rounded-full p-1 w-10 h-10 hover:bg-gray-100" />
+                                ) : user.photoURL ? (
                                     <img
-                                        className=" rounded-full p-1 w-10 h-10  hover:bg-gray-100 "
-                                        src={user?.photoURL}
+                                        className="rounded-full p-1 w-10 h-10 hover:bg-gray-100 object-cover"
+                                        src={user.photoURL}
                                         alt="Profile"
                                         referrerPolicy="no-referrer"
                                     />
                                 ) : (
-                                    <>
-                                        <IoPersonCircleOutline className=" rounded-full p-1 w-10 h-10  hover:bg-gray-100" />
-                                    </>
+                                    <div className="w-10 h-10 rounded-full bg-red-500 text-white flex items-center justify-center text-lg font-semibold uppercase hover:bg-red-600">
+                                        {user.displayName?.charAt(0) || "U"}
+                                    </div>
                                 )}
                             </button>
                         </NavLink>

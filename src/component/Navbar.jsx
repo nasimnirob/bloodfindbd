@@ -128,7 +128,9 @@ const Navbar = () => {
                                 }`
                             }
                         >
-                            {user?.photoURL ? (
+                            {!user ? (
+                                <MdOutlineManageAccounts className="text-2xl" />
+                            ) : user.photoURL ? (
                                 <img
                                     src={user.photoURL}
                                     alt="Profile"
@@ -136,7 +138,9 @@ const Navbar = () => {
                                     className="h-7 w-7 rounded-full object-cover"
                                 />
                             ) : (
-                                <MdOutlineManageAccounts className="text-2xl" />
+                                <div className="h-7 w-7 rounded-full bg-red-500 text-white flex items-center justify-center text-sm font-semibold uppercase">
+                                    {user.displayName?.charAt(0) || "U"}
+                                </div>
                             )}
                             <span className="sr-only">Profile</span>
                         </NavLink>
