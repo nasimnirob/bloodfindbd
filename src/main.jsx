@@ -19,6 +19,10 @@ import Register from './page/Register';
 import AuthProviders from './providers/AuthProviders';
 import { Toaster } from 'react-hot-toast';
 import AvailableDonors from './page/AvailableDonors';
+import CompleteProfile from './page/CompleteProfile';
+// import PrivateRoute from './routes/PrivateRoute';
+import GuestRoute from './route/GuestRoute';
+import PrivateRoute from './route/PrivateRoute';
 
 
 const router = createBrowserRouter([
@@ -48,7 +52,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/profile',
-        element: <Profile />,
+        element: <PrivateRoute><Profile /></PrivateRoute>,
       },
       {
         path: '/blood-information',
@@ -59,15 +63,18 @@ const router = createBrowserRouter([
         element: <AvailableDonors />,
       },
 
-
+      {
+        path: "/complete-profile",
+        element: <CompleteProfile />,
+      },
       
       {
         path: '/login',
-        element: <Login />,
+        element: <GuestRoute><Login /></GuestRoute>,
       },
       {
         path: '/register',
-        element: <Register />,
+        element: <GuestRoute><Register /></GuestRoute>,
       },
 
     ]

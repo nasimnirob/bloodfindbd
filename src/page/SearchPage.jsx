@@ -2,6 +2,7 @@ import { IoCloseSharp, IoTimeOutline } from "react-icons/io5";
 import { RiArrowLeftLine, RiFindReplaceLine } from "react-icons/ri";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
+import useRecentSearches from "../hooks/useRecentSearches";
 
 const SearchPage = () => {
     const navigate = useNavigate();
@@ -16,17 +17,9 @@ const SearchPage = () => {
     // পরের frame এ true করলে transition ঠিকমতো play হয়
     const [isVisible, setIsVisible] = useState(false);
 
-    // TODO: এখানে আসল recent-search data (API/localStorage থেকে) বসবে
-    const [recentSearches, setRecentSearches] = useState([
-        { id: 1, type: "person", name: "Ra Ha Chowdhury", subtitle: "1 new", initial: "R" },
-        { id: 2, type: "person", name: "Abdur Rahman", subtitle: "1 new", initial: "A" },
-        { id: 3, type: "query", name: "Sunnah Square", subtitle: "4 new" },
-        { id: 4, type: "person", name: "Ebrahim Chowdhury", subtitle: "9+ new", initial: "E" },
-        { id: 5, type: "person", name: "NA SI M", initial: "N" },
-        { id: 6, type: "query", name: "fifa world cup 2026 live" },
-        { id: 7, type: "person", name: "Jesmin Islam", initial: "J" },
-        { id: 8, type: "person", name: "Md Hossen", subtitle: "6 mutual friends", initial: "M" },
-    ]);
+    // Real recent searches, backed by localStorage (shared with TopNavbar)
+    const { recentSearches, addRecentSearch, removeRecentSearch, clearRecentSearches } =
+        useRecentSearches();
 
     // mount হওয়ার পরপরই slide-in trigger করা এবং transition শেষ হওয়ার পর input focus
     useEffect(() => {
@@ -44,12 +37,13 @@ const SearchPage = () => {
         setTimeout(() => navigate(-1), 300);
     };
 
-    // টাইপ করার সাথে সাথে URL (?q=...) sync + debounce করে fetch
+    // টাইপ করার সাথে সাথে URL (?q=...) sync + debounce করে fetch + recent এ save
     useEffect(() => {
         const timer = setTimeout(() => {
             if (query.trim()) {
                 setSearchParams({ q: query }, { replace: true });
                 fetchResults(query);
+                addRecentSearch(query);
             } else {
                 setSearchParams({}, { replace: true });
                 setResults([]);
@@ -64,7 +58,7 @@ const SearchPage = () => {
         setIsLoading(true);
         try {
             // TODO: আসল API কল বসবে এখানে, যেমন:
-            // const res = await fetch(`/api/search?q=${encodeURIComponent(q)}`);
+            // const res = await fetch(`${import.meta.env.VITE_API_URL}/donors?search=${encodeURIComponent(q)}`);
             // const data = await res.json();
             // setResults(data);
 
@@ -79,19 +73,14 @@ const SearchPage = () => {
         }
     };
 
-    const removeRecentSearch = (id) => {
-        setRecentSearches((prev) => prev.filter((item) => item.id !== id));
-    };
-
     const handleRecentClick = (item) => {
         setQuery(item.name);
     };
 
     return (
         <div
-            className={`fixed inset-0 z-50 bg-white flex flex-col transition-transform duration-300 ease-in-out ${
-                isVisible ? "translate-x-0" : "translate-x-full"
-            }`}
+            className={`fixed inset-0 z-50 bg-white flex flex-col transition-transform duration-300 ease-in-out ${isVisible ? "translate-x-0" : "translate-x-full"
+                }`}
         >
             {/* Top bar: back + input */}
             <div className="flex items-center gap-2 px-3 py-2.5 border-b border-gray-100 shrink-0">
@@ -112,7 +101,12 @@ const SearchPage = () => {
                         placeholder="Search Blood.."
                     />
                     <button
-                        onClick={() => query.trim() && fetchResults(query)}
+                        onClick={() => {
+                            if (query.trim()) {
+                                fetchResults(query);
+                                addRecentSearch(query);
+                            }
+                        }}
                         className="absolute top-1/2 -translate-y-1/2 right-3.5 text-gray-500 hover:text-red-600 transition-colors"
                     >
                         <RiFindReplaceLine />
@@ -126,15 +120,20 @@ const SearchPage = () => {
                     <>
                         <div className="flex items-center justify-between px-4 pt-3 pb-1">
                             <p className="font-semibold text-gray-900">Recent</p>
-                            <button className="text-sm text-blue-600 font-medium hover:underline">
-                                Edit
-                            </button>
+                            {recentSearches.length > 0 && (
+                                <button
+                                    onClick={clearRecentSearches}
+                                    className="text-sm text-blue-600 font-medium hover:underline"
+                                >
+                                    Clear all
+                                </button>
+                            )}
                         </div>
 
                         <div className="pb-2">
                             {recentSearches.length === 0 && (
                                 <p className="px-4 py-6 text-sm text-gray-400 text-center">
-                                    কোনো recent search নেই
+                                    No recent search....
                                 </p>
                             )}
 
@@ -145,24 +144,13 @@ const SearchPage = () => {
                                     className="flex items-center justify-between px-4 py-2.5 hover:bg-gray-50 transition-colors cursor-pointer"
                                 >
                                     <div className="flex items-center gap-3 min-w-0">
-                                        {item.type === "person" ? (
-                                            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-red-400 to-red-600 flex items-center justify-center text-white font-semibold text-sm shrink-0">
-                                                {item.initial}
-                                            </div>
-                                        ) : (
-                                            <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center shrink-0">
-                                                <IoTimeOutline className="text-gray-500 text-xl" />
-                                            </div>
-                                        )}
+                                        <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center shrink-0">
+                                            <IoTimeOutline className="text-gray-500 text-xl" />
+                                        </div>
                                         <div className="min-w-0">
                                             <p className="text-sm font-semibold text-gray-900 truncate">
                                                 {item.name}
                                             </p>
-                                            {item.subtitle && (
-                                                <p className="text-xs text-gray-500 truncate">
-                                                    {item.subtitle}
-                                                </p>
-                                            )}
                                         </div>
                                     </div>
 
