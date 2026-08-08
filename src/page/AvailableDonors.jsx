@@ -130,7 +130,7 @@ const AvailableDonors = () => {
 
                     <div className="flex flex-col md:flex-row items-start justify-between gap-4 lg:gap-1 md:gap-2 w-full">
                         {/* Blood group chips */}
-                        <div className="grid grid-cols-4 min-[500px]:grid-cols-8 gap-2 w-full px-0">
+                        <div className="grid grid-cols-4 min-[425px]:grid-cols-8 gap-2 w-full px-0">
                             {bloodGroups.map((bg) => {
                                 const active = bloodGroup === bg;
                                 return (
@@ -189,7 +189,7 @@ const AvailableDonors = () => {
                         {error}
                     </p>
                 ) : donors.length === 0 ? (
-                    <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-gray-300 bg-white/60 py-16 text-center md:mt-38 mt-52">
+                    <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-gray-300 bg-white/60 py-16 text-center md:mt-38 mt-52 max-[424px]:mt-60">
                         <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-gray-100">
                             <RiSearchLine className="text-2xl text-gray-400" />
                         </div>
@@ -197,7 +197,7 @@ const AvailableDonors = () => {
                         <p className="mt-1 text-xs text-gray-400">অন্য blood group বা district try করে দেখো</p>
                     </div>
                 ) : (
-                    <div className="space-y-3 md:mt-38 mt-52">
+                    <div className="space-y-3 md:mt-38 mt-52 max-[424px]:mt-60">
                         {donors.map((donor) => (
                             <DonorCard key={donor._id || donor.email} donor={donor} />
                         ))}
