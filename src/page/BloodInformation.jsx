@@ -64,13 +64,11 @@ const BloodInformation = () => {
     <div className="w-full bg-gradient-to-b from-rose-50 via-rose-50/60 to-white pb-20">
       {/* Header */}
       <section className="mx-auto max-w-4xl px-6 pt-14 pb-8 text-center">
-        <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-red-600 text-white shadow-lg shadow-red-200">
-          <Droplet className="h-7 w-7 fill-white" />
-        </div>
+     
         <h1 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
           Blood Information
         </h1>
-        <p className="mt-3 text-gray-600">
+        <p className="mt-3 text-gray-500">
           রক্তের গ্রুপ, ডোনেশনের যোগ্যতা, প্রক্রিয়া — যা জানা দরকার সব একজায়গায়
         </p>
       </section>
@@ -78,8 +76,8 @@ const BloodInformation = () => {
       {/* Blood group compatibility */}
       <section className="mx-auto max-w-4xl px-6 py-8">
         <h2 className="mb-2 text-xl font-bold text-gray-900">Blood Compatibility Chart</h2>
-        <p className="mb-5 text-sm text-red-500">
-          আপনার রক্তের গুরুপ সিলেক্ট করে দেখুন কাদের রক্ত দিতে পারবেন ও কাদের কাছ থেকে রক্ত নিতে পারবেন।   
+        <p className="mb-5 text-sm text-red-400">
+          আপনার রক্তের গুরুপ সিলেক্ট করে দেখুন, কাদের রক্ত দিতে পারবেন ও কাদের কাছ থেকে রক্ত নিতে পারবেন।   
         </p>
 
         {/* group selector */}

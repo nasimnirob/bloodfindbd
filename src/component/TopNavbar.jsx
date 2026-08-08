@@ -783,7 +783,7 @@ const TopNavbar = () => {
                                     )}
                                 </NavLink>
 
-                                <span className="pointer-events-none absolute top-full left-1/2 mt-0.5 -translate-x-1/2 whitespace-nowrap rounded-md bg-[#303131] px-2 py-1 text-xs text-[#DEE0E4] shadow-md opacity-0 transition-opacity duration-200 group-hover:opacity-100 z-50">
+                                <span className="pointer-events-none absolute top-full left-1/2 mt-0.5 -translate-x-1/2 whitespace-nowrap rounded-md bg-[#303131] px-2 py-1 text-xs text-[#DEE0E4] shadow-md opacity-0 transition-opacity duration-200 group-hover:opacity-100">
                                     Blood Request
                                 </span>
                             </li>
