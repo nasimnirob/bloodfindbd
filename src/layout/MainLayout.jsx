@@ -58,7 +58,7 @@ const MainLayout = () => {
                     <TopNavbar />
                 </div>
 
-                <div ref={scrollRef} className="flex-1 overflow-y-auto md:pb-0 py-14">
+                <div ref={scrollRef} className="flex-1 overflow-y-auto md:pb-0 pt-14">
                     <ScrollRestoration scrollContainerRef={scrollRef} />
                     <Outlet />
                     <button className="fixed md:bottom-6 bottom-20 right-6 flex h-14 w-14 items-center justify-center rounded-full bg-red-600 text-white shadow-xl shadow-red-300/50 transition hover:bg-red-700">
