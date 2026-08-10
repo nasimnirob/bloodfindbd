@@ -52,9 +52,9 @@ const MainLayout = () => {
     useProfileCompletionGuard();
 
     return (
-        <div className="bg-[#F2F4F7] ">
-            <div className="flex  flex-col">
-                <div className="fixed w-full z-10">
+        <div className="bg-[#F2F4F7] min-h-screen">
+            <div className="flex min-h-screen flex-col">
+                <div className="fixed w-full z-20">
                     <TopNavbar />
                 </div>
 

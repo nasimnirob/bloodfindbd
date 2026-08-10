@@ -583,7 +583,7 @@ const TopNavbar = () => {
     };
 
     return (
-        <nav ref={navRef} className=" relative rounded-lg bg-white border-gray-200">
+        <nav ref={navRef} className=" relative rounded-lg bg-white/80 backdrop-blur-3xl border-gray-200">
             {/* Main Navbar Bar */}
             <div className="relative flex justify-center items-center w-full px-3 sm:px-3 lg:px-3  shadow-sm gap-2 h-14">
 
@@ -876,10 +876,10 @@ const TopNavbar = () => {
             {open && (
                 <div
                     onClick={() => setOpen(false)}
-                    className="lg:hidden fixed inset-0 bg-black/40 z-30"
+                    className="lg:hidden fixed inset-0 bg-black/10 z-30 h-screen"
+                    title="Close"
                 />
             )}
-
             {/* Mobile Drawer Sidebar */}
             <div
                 ref={menuRef}

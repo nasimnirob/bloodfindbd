@@ -153,11 +153,11 @@ const Profile = () => {
 
           <h1 className="mt-4 flex items-center justify-center gap-2 text-xl font-extrabold text-gray-900">
             {user?.displayName || "No Name"}
-            {!editing && (
+            {/* {!editing && (
               <button onClick={() => setEditing(true)} className="text-gray-400 hover:text-red-600">
                 <HiOutlinePencil className="text-base" />
               </button>
-            )}
+            )} */}
           </h1>
 
           <p className="mt-1 text-sm text-gray-500">
@@ -180,7 +180,7 @@ const Profile = () => {
 
           {/* Availability toggle */}
           <button
-            onClick={handleToggleAvailable}
+
             className={`mt-5 flex w-full items-center justify-between rounded-xl border px-4 py-3 transition ${available ? "border-emerald-200 bg-emerald-50" : "border-gray-200 bg-gray-50"
               }`}
           >
@@ -188,6 +188,7 @@ const Profile = () => {
               {available ? "Available to Donate" : "Currently Unavailable"}
             </span>
             <span
+              onClick={handleToggleAvailable}
               className={`relative h-6 w-11 rounded-full transition ${available ? "bg-emerald-500" : "bg-gray-300"
                 }`}
             >
