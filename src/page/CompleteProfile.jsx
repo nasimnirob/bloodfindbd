@@ -396,7 +396,7 @@ const CompleteProfile = () => {
         setError("");
 
         const { phone, bloodGroup, district, area, gender } = form;
-        if (!phone || !bloodGroup || !district || !area || !gender) {
+        if (!phone || !bloodGroup || !district ) {
             setError("সব ফিল্ড পূরণ করুন");
             return;
         }
@@ -425,8 +425,8 @@ const CompleteProfile = () => {
     };
 
     return (
-        <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-rose-50 via-rose-50/60 to-white px-4 py-12">
-            <div className="w-full max-w-md rounded-2xl border border-red-100 bg-white p-8 shadow-[0_8px_30px_rgba(220,38,38,0.08)]">
+        <div className="flex min-h-[calc(100vh-3.5rem)] items-center justify-center bg-gradient-to-b from-rose-50 via-rose-50/60 to-white px-4 py-12">
+            <div className="w-full max-w-md rounded-2xl border border-red-100 bg-white p-6 shadow-[0_8px_30px_rgba(220,38,38,0.08)]">
                 {/* Header */}
                 <div className="mb-8 text-center">
                     {user.photoURL ? (
@@ -459,7 +459,7 @@ const CompleteProfile = () => {
                     <div className="grid grid-cols-2 gap-3">
                         <div>
                             <label className="mb-1.5 block text-sm font-medium text-gray-700">
-                                Phone
+                                Phone <span className="text-red-600">*</span>
                             </label>
                             <div className="relative">
                                 <HiOutlinePhone className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-lg text-gray-400" />
@@ -476,7 +476,7 @@ const CompleteProfile = () => {
 
                         <div>
                             <label className="mb-1.5 block text-sm font-medium text-gray-700">
-                                Blood Group
+                                Blood Group <span className="text-red-600">*</span>
                             </label>
                             <select
                                 name="bloodGroup"
@@ -539,7 +539,7 @@ const CompleteProfile = () => {
                     {/* Gender */}
                     <div>
                         <label className="mb-1.5 block text-sm font-medium text-gray-700">
-                            Gender
+                            Gender 
                         </label>
                         <select
                             name="gender"

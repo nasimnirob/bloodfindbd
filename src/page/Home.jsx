@@ -102,7 +102,7 @@ export default function Home() {
             </div>
 
             <section className="relative flex max-w-[1920px] mx-auto md:h-220 sm:h-200 h-250 flex-col items-center justify-center px-6 md:pt-16 pb-20 text-center">
-                <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-red-200 bg-white/80 px-4 py-1.5 text-sm font-medium text-gray-700 shadow-sm backdrop-blur">
+                <div className="-mt-24 mb-8 inline-flex items-center gap-2 rounded-full border border-red-200 bg-white/80 px-4 py-1.5 text-sm font-medium text-gray-700 shadow-sm backdrop-blur">
                     <span className="relative flex h-2 w-2">
                         <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-500 opacity-75" />
                         <span className="relative inline-flex h-2 w-2 rounded-full bg-red-500" />
@@ -125,7 +125,7 @@ export default function Home() {
                 </p>
 
                 <div className="mt-9 flex flex-col gap-4 sm:flex-row py-5">
-                    <Link to='/donate-request' className="group inline-flex items-center justify-center gap-2 rounded-full bg-red-600 px-7 py-3.5 font-semibold text-white shadow-lg shadow-red-200 transition hover:bg-red-700">
+                    <Link to='/available-donors' className="group inline-flex items-center justify-center gap-2 rounded-full bg-red-600 px-7 py-3.5 font-semibold text-white shadow-lg shadow-red-200 transition hover:bg-red-700">
                         <Heart className="h-5 w-5 fill-white" />
                         I Need Blood
                         <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />

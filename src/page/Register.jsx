@@ -623,7 +623,7 @@ const Register = () => {
     };
 
     return (
-        <div className="flex items-center justify-center bg-gradient-to-b from-rose-50 via-rose-50/60 to-white px-4 py-12">
+        <div className="flex min-h-[calc(100vh-3.5rem)] items-center justify-center bg-gradient-to-b from-rose-50 via-rose-50/60 to-white px-4 py-12">
             <div className="w-full max-w-lg rounded-2xl border border-red-100 bg-white p-6 shadow-[0_8px_30px_rgba(220,38,38,0.08)]">
                 {/* Header */}
 

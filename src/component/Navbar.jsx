@@ -71,7 +71,7 @@ const Navbar = () => {
                     ) : (
                         <div className="group relative h-full w-full flex items-center justify-center">
                             <NavLink
-                                to="/blood-request"
+                                to="/available-donors"
                                 className={({ isActive }) =>
                                     `flex h-12 w-12 items-center justify-center rounded-full transition-colors border border-red-200 ${isActive
                                         ? "bg-red-600 text-white"

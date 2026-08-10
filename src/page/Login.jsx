@@ -324,7 +324,7 @@
 //         <span className="text-xs text-gray-400">OR</span>
 //         <div className="h-px flex-1 bg-gray-200" />
 //     </div>
-// </div>
+// </div> 
 
 //                 {error && (
 //                     <div className="mb-5 rounded-lg border border-red-200 bg-red-50 px-4 py-2.5 text-sm text-red-600">
@@ -421,12 +421,13 @@
 
 
 import { useContext, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa6";
 import { FcGoogle } from "react-icons/fc";
 import { HiOutlineMail, HiOutlineLockClosed } from "react-icons/hi";
 import { AuthContext } from "../providers/AuthProviders";
 import toast from "react-hot-toast";
+import { HeartPulse } from "lucide-react";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -517,17 +518,33 @@ const Login = () => {
     };
 
     return (
-        <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-rose-50 via-rose-50/60 to-white px-4 py-12">
+        <div className="flex min-h-[calc(100vh-3.5rem)] items-center justify-center bg-gradient-to-b from-rose-50 via-rose-50/60 to-white px-4 py-12">
             <div className="w-full max-w-md rounded-2xl border border-red-100 bg-white p-8 shadow-[0_8px_30px_rgba(220,38,38,0.08)]">
                 {/* Header */}
-                <div className="mb-8 text-center">
-                    <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-red-600 text-2xl font-bold text-white shadow-lg shadow-red-200">
-                        B
-                    </div>
+                <div className="mb- text-center">
+                    <NavLink
+                        to="/"
+                        className={`flex items-center justify-center gap-1.5 shrink-0 overflow-hidden transition-all duration-300 ease-in-out `}
+                    >
+                        <HeartPulse className="bg-red-500 text-white w-10 h-10 p-1.5 rounded-lg" />
+
+                    </NavLink>
                     <h1 className="text-2xl font-extrabold text-gray-900">Welcome Back</h1>
                     <p className="mt-1 text-sm text-gray-500">
                         Login to continue saving lives
                     </p>
+                    <p className="my-6 text-gray-200" ></p>
+                    <div className="">
+                        <button onClick={handleGoogleLogin} className="border border-red-600 btn relative inline-flex items-center justify-start px-6 py-3 overflow-hidden font-medium transition-all bg-white rounded hover:bg-white cursor-pointer group">
+                            <span className="w-48 h-48 rounded rotate-[-40deg] bg-red-600 absolute bottom-0 left-0 -translate-x-full ease-out duration-500 transition-all translate-y-full mb-9 ml-9 group-hover:ml-0 group-hover:mb-32 group-hover:translate-x-0"></span>
+                            <span className="relative w-full text-left text-black transition-colors duration-300 ease-in-out group-hover:text-white">Continue With Google</span>
+                        </button>
+                    </div>
+                    <div className="my-6 flex items-center gap-3">
+                        <div className="h-px flex-1 bg-gray-200" />
+                        <span className="text-xs text-gray-400">OR</span>
+                        <div className="h-px flex-1 bg-gray-200" />
+                    </div>
                 </div>
 
                 {error && (
@@ -604,17 +621,6 @@ const Login = () => {
                     <span className="text-xs text-gray-400">OR</span>
                     <div className="h-px flex-1 bg-gray-200" />
                 </div>
-
-                {/* Google login */}
-                <button
-                    onClick={handleGoogleLogin}
-                    disabled={loading}
-                    type="button"
-                    className="flex w-full items-center justify-center gap-2 rounded-xl border border-gray-200 py-3 text-sm font-semibold text-gray-700 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60"
-                >
-                    <FcGoogle className="text-lg" />
-                    Continue with Google
-                </button>
 
                 {/* Register link */}
                 <p className="mt-6 text-center text-sm text-gray-500">

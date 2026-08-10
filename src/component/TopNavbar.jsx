@@ -766,7 +766,7 @@ const TopNavbar = () => {
                             {/* Blood Request */}
                             <li className="h-full group relative">
                                 <NavLink
-                                    to="/blood-request"
+                                    to="/available-donors"
                                     className={({ isActive }) =>
                                         `flex h-full w-full flex-row items-center justify-center border-b-3 transition-colors ${isActive ? "border-red-600 text-red-600" : "border-transparent"
                                         }`

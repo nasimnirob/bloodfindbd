@@ -52,13 +52,13 @@ const MainLayout = () => {
     useProfileCompletionGuard();
 
     return (
-        <div className="bg-[#F2F4F7] min-h-screen">
-            <div className="flex min-h-screen w-full flex-col">
+        <div className="bg-[#F2F4F7] ">
+            <div className="flex  flex-col">
                 <div className="fixed w-full z-10">
                     <TopNavbar />
                 </div>
 
-                <div ref={scrollRef} className="flex-1 overflow-y-auto md:pb-0 pt-14">
+                <div ref={scrollRef} className="flex-1 overflow-y-auto md:pb-0 pt-14 ">
                     <ScrollRestoration scrollContainerRef={scrollRef} />
                     <Outlet />
                     <button className="fixed md:bottom-6 bottom-20 right-6 flex h-14 w-14 items-center justify-center rounded-full bg-red-600 text-white shadow-xl shadow-red-300/50 transition hover:bg-red-700">

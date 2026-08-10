@@ -4,7 +4,7 @@ import { AuthContext } from "../providers/AuthProviders";
 
 const API_URL = import.meta.env.VITE_API_URL;
 const CHECK_INTERVAL_MS = 30000; // 30 seconds
-const MANDATORY_FIELDS = ["phone", "bloodGroup", "district", "gender"];
+const MANDATORY_FIELDS = ["phone", "bloodGroup", "district", ];
 
 // Paths where we should never force-redirect (already there, or not logged in yet)
 const EXCLUDED_PATHS = ["/complete-profile", "/login", "/register"];

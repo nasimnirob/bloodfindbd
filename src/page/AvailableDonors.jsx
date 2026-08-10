@@ -105,7 +105,7 @@ const AvailableDonors = () => {
     const hasFilters = Boolean(bloodGroup || district);
 
     return (
-        <div className="min-h-screen bg-[#F2F4F7]">
+        <div className="md:min-h-screen min-h-[calc(100vh-20rem)] bg-[#F2F4F7]">
             {/* Fixed Filter Bar */}
             <div className="fixed top-14 left-0 right-0 z-20 border-b border-gray-200/70 bg-[#F2F4F7]/95 backdrop-blur-md">
                 <div className="mx-auto max-w-[700px] px-3 py-2">
@@ -130,7 +130,7 @@ const AvailableDonors = () => {
 
                     <div className="flex flex-col md:flex-row items-start justify-between gap-4 lg:gap-1 md:gap-2 w-full">
                         {/* Blood group chips */}
-                        <div className="grid grid-cols-4 min-[425px]:grid-cols-8 gap-2 w-full px-0">
+                        <div className="grid grid-cols-4 min-[374px]:grid-cols-8 gap-2 w-full px-0">
                             {bloodGroups.map((bg) => {
                                 const active = bloodGroup === bg;
                                 return (
@@ -138,8 +138,8 @@ const AvailableDonors = () => {
                                         key={bg}
                                         onClick={() => setBloodGroup(active ? "" : bg)}
                                         className={`w-full rounded-full px-2 py-2 text-sm font-bold transition ${active
-                                                ? "bg-red-600 text-white shadow-md shadow-red-200"
-                                                : "bg-white text-gray-600 ring-1 ring-gray-200 hover:bg-red-50 hover:text-red-600"
+                                            ? "bg-red-600 text-white shadow-md shadow-red-200"
+                                            : "bg-white text-gray-600 ring-1 ring-gray-200 hover:bg-red-50 hover:text-red-600"
                                             }`}
                                     >
                                         {bg}
@@ -179,25 +179,25 @@ const AvailableDonors = () => {
             {/* Results */}
             <div className="mx-auto max-w-[700px] px-4 pb-5">
                 {isLoading ? (
-                    <div className="space-y-3">
+                    <div className="space-y-3 md:mt-38 mt-52 max-[374px]:mt-64">
                         {[1, 2, 3].map((i) => (
                             <div key={i} className="h-24 animate-pulse rounded-2xl bg-white/70 shadow-sm" />
                         ))}
                     </div>
                 ) : error ? (
-                    <p className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600">
+                    <p className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600 md:mt-38 mt-52 max-[374px]:mt-64">
                         {error}
                     </p>
                 ) : donors.length === 0 ? (
-                    <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-gray-300 bg-white/60 py-16 text-center md:mt-38 mt-52 max-[424px]:mt-60">
+                    <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-gray-300 bg-white/60 py-16 text-center md:mt-38 mt-52 max-[374px]:mt-64">
                         <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-gray-100">
                             <RiSearchLine className="text-2xl text-gray-400" />
                         </div>
-                        <p className="text-sm font-medium text-gray-600">কোনো available donor পাওয়া যায়নি</p>
-                        <p className="mt-1 text-xs text-gray-400">অন্য blood group বা district try করে দেখো</p>
+                        <p className="text-sm font-medium text-gray-600">No available donor..</p>
+                        <p className="mt-1 text-xs text-gray-400">Please try with another blood group and district.</p>
                     </div>
                 ) : (
-                    <div className="space-y-3 md:mt-38 mt-52 max-[424px]:mt-60">
+                    <div className="space-y-3 md:mt-38 mt-52 max-[374px]:mt-64">
                         {donors.map((donor) => (
                             <DonorCard key={donor._id || donor.email} donor={donor} />
                         ))}
