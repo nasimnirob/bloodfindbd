@@ -1,8 +1,11 @@
 import { IoCloseSharp, IoTimeOutline } from "react-icons/io5";
-import { RiArrowLeftLine, RiFindReplaceLine } from "react-icons/ri";
+import { RiArrowLeftLine, RiFindReplaceLine, RiSearchLine } from "react-icons/ri";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import useRecentSearches from "../hooks/useRecentSearches";
+import DonorCard from "../component/DonorCard";
+
+const API_URL = import.meta.env.VITE_API_URL;
 
 const SearchPage = () => {
     const navigate = useNavigate();
@@ -12,16 +15,13 @@ const SearchPage = () => {
     const [query, setQuery] = useState(searchParams.get("q") || "");
     const [results, setResults] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState("");
 
-    // ডান দিক থেকে slide-in করার জন্য — mount এর প্রথম frame এ false রেখে,
-    // পরের frame এ true করলে transition ঠিকমতো play হয়
     const [isVisible, setIsVisible] = useState(false);
 
-    // Real recent searches, backed by localStorage (shared with TopNavbar)
     const { recentSearches, addRecentSearch, removeRecentSearch, clearRecentSearches } =
         useRecentSearches();
 
-    // mount হওয়ার পরপরই slide-in trigger করা এবং transition শেষ হওয়ার পর input focus
     useEffect(() => {
         const raf = requestAnimationFrame(() => setIsVisible(true));
         const focusTimer = setTimeout(() => inputRef.current?.focus(), 300);
@@ -31,44 +31,46 @@ const SearchPage = () => {
         };
     }, []);
 
-    // Back বাটনে slide-out animation শেষ হওয়ার পর আসল navigation
     const handleBack = () => {
         setIsVisible(false);
         setTimeout(() => navigate(-1), 300);
     };
 
-    // টাইপ করার সাথে সাথে URL (?q=...) sync + debounce করে fetch + recent এ save
+    // টাইপ করার সাথে সাথে URL (?q=...) sync + debounce করে real donor search + recent এ save
     useEffect(() => {
+        const controller = new AbortController();
+
         const timer = setTimeout(() => {
             if (query.trim()) {
                 setSearchParams({ q: query }, { replace: true });
-                fetchResults(query);
+                fetchResults(query, controller.signal);
                 addRecentSearch(query);
             } else {
                 setSearchParams({}, { replace: true });
                 setResults([]);
+                setError("");
             }
         }, 400); // debounce
 
-        return () => clearTimeout(timer);
+        return () => {
+            clearTimeout(timer);
+            controller.abort();
+        };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [query]);
 
-    const fetchResults = async (q) => {
+    const fetchResults = async (q, signal) => {
         setIsLoading(true);
+        setError("");
         try {
-            // TODO: আসল API কল বসবে এখানে, যেমন:
-            // const res = await fetch(`${import.meta.env.VITE_API_URL}/donors?search=${encodeURIComponent(q)}`);
-            // const data = await res.json();
-            // setResults(data);
-
-            // demo/dummy placeholder — আসল integration এ বাদ দেবেন
-            await new Promise((r) => setTimeout(r, 300));
-            setResults([
-                { id: "r1", name: `"${q}" এর জন্য ফলাফল ১` },
-                { id: "r2", name: `"${q}" এর জন্য ফলাফল ২` },
-            ]);
-        } finally {
+            const res = await fetch(`${API_URL}/donors?search=${encodeURIComponent(q)}`, { signal });
+            if (!res.ok) throw new Error("খুঁজতে সমস্যা হয়েছে");
+            const data = await res.json();
+            setResults(data);
+            setIsLoading(false);
+        } catch (err) {
+            if (err.name === "AbortError") return;
+            setError(err.message || "খুঁজতে সমস্যা হয়েছে");
             setIsLoading(false);
         }
     };
@@ -98,7 +100,7 @@ const SearchPage = () => {
                         onChange={(e) => setQuery(e.target.value)}
                         className="w-full px-4 pr-9 py-[7px] rounded-full border border-[#eaedf1] bg-[#f7f8f9] text-sm outline-none focus:border-red-300 focus:bg-white focus:ring-2 focus:ring-red-100"
                         type="search"
-                        placeholder="Search Blood.."
+                        placeholder="নাম, জেলা, এলাকা বা blood group দিয়ে খুঁজুন.."
                     />
                     <button
                         onClick={() => {
@@ -114,7 +116,7 @@ const SearchPage = () => {
                 </div>
             </div>
 
-            {/* Body: recent searches OR live results */}
+            {/* Body: recent searches OR live donor results */}
             <div className="flex-1 overflow-y-auto">
                 {query.trim() === "" ? (
                     <>
@@ -170,20 +172,27 @@ const SearchPage = () => {
                 ) : (
                     <div className="px-4 py-3">
                         {isLoading ? (
-                            <p className="text-sm text-gray-400">খোঁজা হচ্ছে...</p>
-                        ) : results.length === 0 ? (
-                            <p className="text-sm text-gray-400">কোনো ফলাফল পাওয়া যায়নি</p>
-                        ) : (
-                            <ul className="space-y-1">
-                                {results.map((r) => (
-                                    <li
-                                        key={r.id}
-                                        className="px-2 py-2.5 rounded-lg hover:bg-gray-50 cursor-pointer text-sm text-gray-800"
-                                    >
-                                        {r.name}
-                                    </li>
+                            <div className="space-y-3">
+                                {[1, 2, 3].map((i) => (
+                                    <div key={i} className="h-20 animate-pulse rounded-2xl bg-gray-100" />
                                 ))}
-                            </ul>
+                            </div>
+                        ) : error ? (
+                            <p className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600">
+                                {error}
+                            </p>
+                        ) : results.length === 0 ? (
+                            <div className="flex flex-col items-center justify-center py-14 text-center">
+                                <RiSearchLine className="mb-2 text-3xl text-gray-300" />
+                                <p className="text-sm text-gray-500">কোনো ডোনার পাওয়া যায়নি</p>
+                                <p className="text-xs text-gray-400">অন্য নাম, জেলা বা blood group দিয়ে খুঁজে দেখো</p>
+                            </div>
+                        ) : (
+                            <div className="space-y-3">
+                                {results.map((donor) => (
+                                    <DonorCard key={donor._id || donor.email} donor={donor} />
+                                ))}
+                            </div>
                         )}
                     </div>
                 )}
