@@ -40,7 +40,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/donate',
-        element: <Donate />,
+        element: <PrivateRoute><Donate /></PrivateRoute>,
       },
       {
         path: '/donate-request',
@@ -65,9 +65,9 @@ const router = createBrowserRouter([
 
       {
         path: "/complete-profile",
-        element: <CompleteProfile />,
+        element: <PrivateRoute> <CompleteProfile /> </PrivateRoute>,
       },
-      
+
       {
         path: '/login',
         element: <GuestRoute><Login /></GuestRoute>,

@@ -1,3 +1,15 @@
+// import React from 'react'
+
+// function Donate() {
+//   return (
+//     <div className='flex items-center justify-center w-full min-h-[calc(100vh-3rem)]'>Donate</div>
+//   )
+// }
+
+// export default Donate
+
+
+
 import { useState } from "react";
 
 const bloodGroups = [

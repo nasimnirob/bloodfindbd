@@ -58,13 +58,13 @@ const TopNavbar = () => {
                 const res = await fetch(`${API_URL}/donors?search=${encodeURIComponent(trimmed)}`, {
                     signal: controller.signal,
                 });
-                if (!res.ok) throw new Error("খুঁজতে সমস্যা হয়েছে");
+                if (!res.ok) throw new Error("There was a problem finding.");
                 const data = await res.json();
                 setLiveResults(data);
                 setIsSearching(false);
             } catch (err) {
                 if (err.name === "AbortError") return;
-                setSearchError(err.message || "খুঁজতে সমস্যা হয়েছে");
+                setSearchError(err.message || "There was a problem finding.");
                 setIsSearching(false);
             }
         }, 400);
