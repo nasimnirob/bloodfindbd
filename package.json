@@ -1,8 +1,20 @@
 {
   "name": "bloodfind-frontend",
-  "private": true,
   "version": "0.0.0",
+  "private": true,
+  "description": "Blood Find BD",
+  "homepage": "https://github.com/nasimnirob/bloodfindbd#readme",
+  "bugs": {
+    "url": "https://github.com/nasimnirob/bloodfindbd/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nasimnirob/bloodfindbd.git"
+  },
+  "license": "ISC",
+  "author": "",
   "type": "module",
+  "main": "eslint.config.js",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -11,11 +23,13 @@
   },
   "dependencies": {
     "firebase": "^12.17.0",
+    "leaflet": "^1.9.4",
     "lucide-react": "^1.27.0",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
     "react-hot-toast": "^2.6.0",
     "react-icons": "^5.7.0",
+    "react-leaflet": "^5.0.0",
     "react-router-dom": "^7.18.1"
   },
   "devDependencies": {

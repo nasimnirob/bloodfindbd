@@ -77,7 +77,7 @@ const testimonials = [
     },
 ];
 
-export default function Home() {
+ const Home = () => {
     return (
         <div className="w-full bg-linear-to-b from-rose-50 via-rose-50/60 to-white">
             {/* ---------- HERO ---------- */}
@@ -239,7 +239,7 @@ export default function Home() {
                         </p>
                     </div>
                     <Link
-                        to="/available-donors"
+                        to="/donate"
                         className="inline-flex items-center gap-1 text-sm font-semibold text-red-600 hover:underline"
                     >
                         View all requests
@@ -356,6 +356,7 @@ export default function Home() {
     );
 }
 
+export default Home;
 
 // import { Heart, Users, ShieldCheck, Clock, Globe, Sparkles, ArrowRight } from "lucide-react";
 // import { Link } from "react-router-dom";

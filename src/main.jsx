@@ -1,5 +1,6 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
+import "leaflet/dist/leaflet.css";
 import {
   createBrowserRouter,
   RouterProvider,
@@ -9,7 +10,6 @@ import MainLayout from './layout/MainLayout';
 
 import Home from './page/Home';
 import SearchPage from './page/SearchPage';
-import Donate from './page/Donate';
 import DonateRequest from './page/DonateRequest';
 import Profile from './page/Profile';
 import BloodInformation from './page/BloodInformation';
@@ -23,6 +23,10 @@ import CompleteProfile from './page/CompleteProfile';
 // import PrivateRoute from './routes/PrivateRoute';
 import GuestRoute from './route/GuestRoute';
 import PrivateRoute from './route/PrivateRoute';
+import Donate from './page/Donate';
+import NotFound from './page/NotFound';
+import MyPosts from './page/MyPosts';
+import EditPost from './page/EditPost';
 
 
 const router = createBrowserRouter([
@@ -69,6 +73,18 @@ const router = createBrowserRouter([
       },
 
       {
+        path: "/my-posts",
+        element: <PrivateRoute> <MyPosts /> </PrivateRoute>,
+      },
+      {
+        path: "/edit-post/:id",
+        element: <PrivateRoute> <EditPost /> </PrivateRoute>,
+      },
+
+
+      // Auth
+
+      {
         path: '/login',
         element: <GuestRoute><Login /></GuestRoute>,
       },
@@ -77,6 +93,11 @@ const router = createBrowserRouter([
         element: <GuestRoute><Register /></GuestRoute>,
       },
 
+
+      {
+        path: "*",
+        element: <NotFound />,
+      },
     ]
   },
 ]);

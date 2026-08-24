@@ -1,6 +1,6 @@
-import { Heart } from 'lucide-react'
+import { Heart, HeartPulse } from 'lucide-react'
 import React from 'react'
-import { FaInstagram, FaTwitter } from 'react-icons/fa'
+import { FaInstagram, FaLinkedin, FaTwitter, FaYoutube } from 'react-icons/fa'
 import { FaFacebook } from 'react-icons/fa6'
 import { Link } from 'react-router-dom'
 
@@ -11,7 +11,7 @@ function Footer() {
                 <div className="grid grid-cols-1 gap-10 sm:grid-cols-4">
                     <div>
                         <div className="flex items-center gap-2 text-lg font-extrabold text-gray-900">
-                            <Heart className="h-5 w-5 fill-red-600 text-red-600" />
+                            <HeartPulse className="bg-red-500 text-white w-10 h-10 p-1.5 rounded-lg" />
                             Blood Find BD
                         </div>
                         <p className="mt-3 text-sm text-gray-500">
@@ -22,7 +22,7 @@ function Footer() {
                     <div>
                         <h4 className="font-semibold text-gray-900">Platform</h4>
                         <ul className="mt-3 space-y-2 text-sm text-gray-500">
-                            <li><Link to="/donate-request" className="hover:text-red-600">I Need Blood</Link></li>
+                            <li><Link to="/blood-request" className="hover:text-red-600">I Need Blood</Link></li>
                             <li><Link to="/donate" className="hover:text-red-600">I Want to Donate</Link></li>
                             <li><Link to="/available-donors" className="hover:text-red-600">Available Donors</Link></li>
                             <li><Link to="/blood-information" className="hover:text-red-600">Blood Information</Link></li>
@@ -41,18 +41,34 @@ function Footer() {
 
                     <div>
                         <h4 className="font-semibold text-gray-900">Follow Us</h4>
+
                         <div className="mt-3 flex gap-3">
-                            <a href="#" className="flex h-9 w-9 items-center justify-center rounded-full bg-red-50 text-red-600 hover:bg-red-600 hover:text-white">
+                            <a
+                                href="https://www.facebook.com/nasim.nirob.official"
+                                target='blank'
+                                className="flex h-9 w-9 items-center justify-center rounded-full bg-red-50 text-red-600 transition hover:bg-red-600 hover:text-white"
+                            >
                                 <FaFacebook className="h-4 w-4" />
                             </a>
-                            <a href="#" className="flex h-9 w-9 items-center justify-center rounded-full bg-red-50 text-red-600 hover:bg-red-600 hover:text-white">
-                                <FaTwitter className="h-4 w-4" />
+
+                            <a
+                                href="https://www.linkedin.com/in/nasim-nirob/"
+                                target='_blank'
+                                className="flex h-9 w-9 items-center justify-center rounded-full bg-red-50 text-red-600 transition hover:bg-red-600 hover:text-white"
+                            >
+                                <FaLinkedin className="h-4 w-4" />
                             </a>
-                            <a href="#" className="flex h-9 w-9 items-center justify-center rounded-full bg-red-50 text-red-600 hover:bg-red-600 hover:text-white">
-                                <FaInstagram className="h-4 w-4" />
+
+                            <a
+                                href="https://www.youtube.com/@nasimnirob"
+                                target='_blank'
+                                className="flex h-9 w-9 items-center justify-center rounded-full bg-red-50 text-red-600 transition hover:bg-red-600 hover:text-white"
+                            >
+                                <FaYoutube className="h-4 w-4" />
                             </a>
                         </div>
                     </div>
+
                 </div>
 
                 <div className="mt-10 border-t border-gray-100 pt-6 text-center text-xs text-gray-400">

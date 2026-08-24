@@ -39,7 +39,7 @@ function DonateRequest() {
             <h1 className="text-xl md:text-2xl font-semibold text-gray-900">Find A Donor</h1>
           </div>
           <p className="mt-1 text-center text-sm text-gray-500">
-            নিচের তথ্যগুলো পূরণ করলে আশেপাশের সম্ভাব্য donor-রা notification পাবেন
+            নিচের তথ্যগুলো পূরণ করলে আশেপাশের সম্ভাব্য রক্তদাতা নোটিফিকেশন পাবেন
           </p>
         </div>
 

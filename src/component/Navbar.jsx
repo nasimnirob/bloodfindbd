@@ -1,7 +1,7 @@
-import { BookOpen } from "lucide-react";
+import { BookOpen, SquarePen } from "lucide-react";
 import { useContext } from "react";
 import { BiSolidDonateHeart } from "react-icons/bi";
-import { MdBloodtype, MdOutlineManageAccounts } from "react-icons/md";
+import { MdBloodtype, MdOutlineManageAccounts, MdPeople } from "react-icons/md";
 import { RiHome4Fill } from "react-icons/ri";
 import { NavLink } from "react-router-dom";
 import { AuthContext } from "../providers/AuthProviders";
@@ -55,12 +55,13 @@ const Navbar = () => {
                                 }`
                             }
                         >
-                            <MdBloodtype className="text-2xl" />
+                            {/* <MdBloodtype className="text-2xl" /> */}
+                            <BiSolidDonateHeart className="text-2xl" />
                             <span className="sr-only">Blood Donate</span>
                         </NavLink>
 
                         <span className="pointer-events-none absolute -top-6 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md bg-[#303131]  px-2 py-1 text-xs text-[#DEE0E4] shadow-md opacity-0 transition-opacity duration-200 group-hover:opacity-100">
-                            Blood Donate
+                            Donate
                         </span>
                     </div>
                 )}
@@ -69,9 +70,9 @@ const Navbar = () => {
                     {loading ? (
                         <div className="h-12 w-12 bg-gray-200 rounded-full animate-pulse"></div>
                     ) : (
-                        <div className="group relative h-full w-full flex items-center justify-center">
+                        <div className="group relative h-full w-full flex items-center justify-center mb-2">
                             <NavLink
-                                to="/available-donors"
+                                to="/blood-request"
                                 className={({ isActive }) =>
                                     `flex h-12 w-12 items-center justify-center rounded-full transition-colors border border-red-200 ${isActive
                                         ? "bg-red-600 text-white"
@@ -79,11 +80,11 @@ const Navbar = () => {
                                     }`
                                 }
                             >
-                                <BiSolidDonateHeart className="text-3xl" />
-                                <span className="sr-only">Blood Request</span>
+                                <SquarePen className="text-3xl" />
+                                <span className="sr-only">Create Post</span>
                             </NavLink>
                             <span className="pointer-events-none absolute -top-6 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md bg-[#303131]  px-2 py-1 text-xs text-[#DEE0E4] shadow-md opacity-0 transition-opacity duration-200 group-hover:opacity-100">
-                                Blood Request
+                                Create Request
                             </span>
                         </div>
                     )}
@@ -96,7 +97,7 @@ const Navbar = () => {
                 ) : (
                     <div className="group relative h-full w-full">
                         <NavLink
-                            to="/blood-information"
+                            to="/available-donors"
                             className={({ isActive }) =>
                                 `flex h-full w-full flex-col items-center justify-center gap-0.5 border-t-2 transition-colors ${isActive
                                     ? "border-red-600 text-red-600"
@@ -104,13 +105,30 @@ const Navbar = () => {
                                 }`
                             }
                         >
-                            <BookOpen className="text-2xl" />
-                            <span className="sr-only">Blood Information</span>
+                            <MdPeople className="text-2xl" />
+                            <span className="sr-only">Available Donor</span>
                         </NavLink>
                         <span className="pointer-events-none absolute -top-6 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md bg-[#303131]  px-2 py-1 text-xs text-[#DEE0E4] shadow-md opacity-0 transition-opacity duration-200 group-hover:opacity-100">
-                            Blood Information
+                            Available Donor
                         </span>
                     </div>
+                    // <div className="group relative h-full w-full">
+                    //     <NavLink
+                    //         to="/blood-information"
+                    //         className={({ isActive }) =>
+                    //             `flex h-full w-full flex-col items-center justify-center gap-0.5 border-t-2 transition-colors ${isActive
+                    //                 ? "border-red-600 text-red-600"
+                    //                 : "border-transparent text-gray-600 hover:bg-[#F2F2F2]"
+                    //             }`
+                    //         }
+                    //     >
+                    //         <BookOpen className="text-2xl" />
+                    //         <span className="sr-only">Blood Information</span>
+                    //     </NavLink>
+                    //     <span className="pointer-events-none absolute -top-6 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md bg-[#303131]  px-2 py-1 text-xs text-[#DEE0E4] shadow-md opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+                    //         Blood Information
+                    //     </span>
+                    // </div>
                 )}
 
                 {loading ? (

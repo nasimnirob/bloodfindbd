@@ -5,8 +5,8 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useState, useRef, useLayoutEffect, useContext, useEffect } from "react";
 import logo from "../../public/logo/logo.png";
 import { BiDonateHeart, BiSolidDonateHeart } from "react-icons/bi";
-import { MdBloodtype } from "react-icons/md";
-import { HeartPulse } from "lucide-react";
+import { MdBloodtype, MdPeople } from "react-icons/md";
+import { HeartPulse, Search, Siren, SquarePen } from "lucide-react";
 import { RxPerson } from "react-icons/rx";
 import { AuthContext } from "../providers/AuthProviders";
 import useRecentSearches from "../hooks/useRecentSearches";
@@ -115,12 +115,13 @@ const TopNavbar = () => {
                         className={`flex items-center gap-1.5 shrink-0 overflow-hidden transition-all duration-300 ease-in-out ${isSearchFocused ? "md:max-w-0 md:opacity-0 md:-ml-2" : "max-w-[220px] opacity-100"
                             }`}
                     >
-                        <img className="w-8 sm:w-10 lg:w-12 h-auto shrink-0" src={logo} alt="Blood Find Logo" />
-                        <div className="flex flex-col justify-center">
-                            <div className="text-base sm:text-lg lg:text-2xl font-bold text-red-600 leading-tight whitespace-nowrap">
+                        {/* <img className="w-8 sm:w-10 lg:w-12 h-auto shrink-0" src={logo} alt="Blood Find Logo" /> */}
+                        <HeartPulse className="bg-red-500 text-white w-9 h-9 p-1.5 rounded-lg" />
+                        <div className="lg:flex flex-col justify-center sm:block md:hidden">
+                            <div className="text-base sm:text-lg lg:text-xl font-bold text-red-600 leading-tight whitespace-nowrap">
                                 Blood Find
                             </div>
-                            <div className="text-[10px] lg:text-sm font-medium text-gray-600 leading-tight whitespace-nowrap">
+                            <div className="text-[10px] lg:text-[10px] font-medium text-gray-600 leading-tight whitespace-nowrap">
                                 Global Blood Network
                             </div>
                         </div>
@@ -132,9 +133,9 @@ const TopNavbar = () => {
                             : "flex-1 max-w-[160px] lg:max-w-[240px] xl:max-w-[320px]"
                             }`}
                     >
-                        <RiFindReplaceLine
+                        <Search
                             className={`absolute top-1/2 -translate-y-1/2 left-3 pointer-events-none ${isSearchFocused ? "hidden" : ""
-                                } text-gray-500 z-10`}
+                                } text-gray-600 w-5 z-10`}
                         />
                         <div className="flex flex-row gap-3">
                             <button
@@ -269,7 +270,7 @@ const TopNavbar = () => {
                                 >
                                     {({ isActive }) => (
                                         <div
-                                            className={`flex items-center justify-center rounded-lg px-5 py-3 ${isActive ? "" : "hover:bg-[#F2F2F2]"
+                                            className={`flex items-center justify-center rounded-lg px-3 py-3 ${isActive ? "" : "hover:bg-[#F2F2F2]"
                                                 }`}
                                         >
                                             <RiHome4Fill />
@@ -285,6 +286,30 @@ const TopNavbar = () => {
 
                             <li className="h-full group relative">
                                 <NavLink
+                                    to="/blood-request"
+                                    className={({ isActive }) =>
+                                        `flex h-full w-full flex-row items-center justify-center border-b-3 transition-colors ${isActive ? "border-red-600 text-red-600" : "border-transparent"
+                                        }`
+                                    }
+                                >
+                                    {({ isActive }) => (
+                                        <div
+                                            className={`flex items-center justify-center rounded-lg px-2 py-3 ${isActive ? "" : "hover:bg-[#F2F2F2]"
+                                                }`}
+                                        >
+                                            {/* <BiSolidDonateHeart /> */}
+                                            <SquarePen className=" w-4.5 h-4.5" />
+                                            <span className="ms-2">Create Request</span>
+                                        </div>
+                                    )}
+                                </NavLink>
+
+                                <span className="pointer-events-none absolute top-full mt-0.5 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md bg-[#303131]  px-2 py-1 text-xs text-[#DEE0E4] shadow-md opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+                                    Create Requests
+                                </span>
+                            </li>
+                            <li className="h-full group relative">
+                                <NavLink
                                     to="/donate"
                                     className={({ isActive }) =>
                                         `flex h-full w-full flex-row items-center justify-center border-b-3 transition-colors ${isActive ? "border-red-600 text-red-600" : "border-transparent"
@@ -293,17 +318,17 @@ const TopNavbar = () => {
                                 >
                                     {({ isActive }) => (
                                         <div
-                                            className={`flex items-center justify-center rounded-lg px-5 py-3 ${isActive ? "" : "hover:bg-[#F2F2F2]"
+                                            className={`flex items-center justify-center rounded-lg px-2 py-3 ${isActive ? "" : "hover:bg-[#F2F2F2]"
                                                 }`}
                                         >
                                             <BiSolidDonateHeart />
-                                            <span className="ms-2">Blood Donate</span>
+                                            <span className="ms-2">Donate</span>
                                         </div>
                                     )}
                                 </NavLink>
 
                                 <span className="pointer-events-none absolute top-full mt-0.5 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md bg-[#303131]  px-2 py-1 text-xs text-[#DEE0E4] shadow-md opacity-0 transition-opacity duration-200 group-hover:opacity-100">
-                                    Blood Donate
+                                    Donate
                                 </span>
                             </li>
 
@@ -317,17 +342,17 @@ const TopNavbar = () => {
                                 >
                                     {({ isActive }) => (
                                         <div
-                                            className={`flex items-center justify-center rounded-lg px-5 py-3 ${isActive ? "" : "hover:bg-[#F2F2F2]"
+                                            className={`flex items-center justify-center rounded-lg px-2 py-3 ${isActive ? "" : "hover:bg-[#F2F2F2]"
                                                 }`}
                                         >
-                                            <MdBloodtype />
-                                            <span className="ms-2">Blood Request</span>
+                                            <MdPeople className="text-lg" />
+                                            <span className="ms-2">Available Donors</span>
                                         </div>
                                     )}
                                 </NavLink>
 
                                 <span className="pointer-events-none absolute top-full left-1/2 mt-0.5 -translate-x-1/2 whitespace-nowrap rounded-md bg-[#303131] px-2 py-1 text-xs text-[#DEE0E4] shadow-md opacity-0 transition-opacity duration-200 group-hover:opacity-100">
-                                    Blood Request
+                                    Available Donors
                                 </span>
                             </li>
 
@@ -486,7 +511,7 @@ const TopNavbar = () => {
 
                         <li>
                             <NavLink
-                                to="/donate-request"
+                                to="/blood-request"
                                 onClick={() => setOpen(false)}
                                 className={({ isActive }) => isActive
                                     ?
@@ -495,8 +520,8 @@ const TopNavbar = () => {
                                     'flex p-2 py-2.5 items-center rounded-lg hover:bg-gray-200 w-full transition-colors'
                                 }
                             >
-                                <MdBloodtype />
-                                <span className="ms-2">Blood Request</span>
+                                <SquarePen className="w-4" />
+                                <span className="ms-2">Create Blood Request</span>
                             </NavLink>
                         </li>
                         <li>
