@@ -84,16 +84,9 @@ const AuthProvider = ({ children }) => {
         return () => unsubscribe();
     }, []);
 
-    if (loading) {
-        return (
-            <div className="flex min-h-screen items-center justify-center">
-                <div className="h-10 w-10 animate-spin rounded-full border-4 border-red-200 border-t-red-600"></div>
-            </div>
-        );
-    }
-
+    
     const authInfo = { user, loading, createUser, signIn, googleSignIn, updateUserProfile, verifyEmail, resetPassword, logOut, };
-
+    
     return (
         <AuthContext.Provider value={authInfo}>
             {children}
@@ -102,3 +95,10 @@ const AuthProvider = ({ children }) => {
 };
 
 export default AuthProvider;
+// if (loading) {
+//     return (
+//         <div className="flex min-h-screen items-center justify-center">
+//             <div className="h-10 w-10 animate-spin rounded-full border-4 border-red-200 border-t-red-600"></div>
+//         </div>
+//     );
+// }

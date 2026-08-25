@@ -102,7 +102,7 @@ const testimonials = [
             </div>
 
             <section className="relative flex max-w-[1920px] mx-auto md:h-220 sm:h-200 h-250 flex-col items-center justify-center px-6 md:pt-16 pb-20 text-center">
-                <div className="-mt-24 mb-8 inline-flex items-center gap-2 rounded-full border border-red-200 bg-white/80 px-4 py-1.5 text-sm font-medium text-gray-700 shadow-sm backdrop-blur">
+                <div className="-mt-30 mb-8 inline-flex items-center gap-2 rounded-full border border-red-200 bg-white/80 px-4 py-1.5 text-sm font-medium text-gray-700 shadow-sm backdrop-blur">
                     <span className="relative flex h-2 w-2">
                         <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-500 opacity-75" />
                         <span className="relative inline-flex h-2 w-2 rounded-full bg-red-500" />
