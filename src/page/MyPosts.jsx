@@ -138,7 +138,7 @@ const MyPosts = () => {
 
   const [posts, setPosts] = useState([]);
 
-  const [postLoading, setPostLoading] = useState(true);
+  const [postLoading, setPostLoading] = useState(false);
 
   const [postError, setPostError] = useState("");
 

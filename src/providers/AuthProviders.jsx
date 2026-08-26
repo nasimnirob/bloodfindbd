@@ -73,20 +73,60 @@ const AuthProvider = ({ children }) => {
         }
     };
 
-    
-    useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-            console.log('user State change', currentUser);
-            setUser(currentUser);
-            setLoading(false);
-        });
 
-        return () => unsubscribe();
+    // useEffect(() => {
+    //     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+    //         console.log('user State change', currentUser);
+    //         setUser(currentUser);
+    //         setLoading(false);
+    //     });
+
+    //     return () => unsubscribe();
+    // }, []);
+
+
+    useEffect(() => {
+        let isMounted = true;
+
+        const unsubscribe = onAuthStateChanged(
+            auth,
+            (currentUser) => {
+                if (!isMounted) return;
+
+                console.log("User state changed:", currentUser);
+
+                setUser(currentUser);
+                setLoading(false);
+            },
+            (error) => {
+                console.error("Firebase Auth Error:", error);
+
+                if (!isMounted) return;
+
+                setUser(null);
+                setLoading(false);
+            }
+        );
+
+        // Firebase initialization
+        const timeout = setTimeout(() => {
+            if (!isMounted) return;
+
+            console.warn("Firebase Auth initialization timeout");
+
+            setLoading(false);
+        }, 3000);
+
+        return () => {
+            isMounted = false;
+            unsubscribe();
+            clearTimeout(timeout);
+        };
     }, []);
 
-    
+
     const authInfo = { user, loading, createUser, signIn, googleSignIn, updateUserProfile, verifyEmail, resetPassword, logOut, };
-    
+
     return (
         <AuthContext.Provider value={authInfo}>
             {children}

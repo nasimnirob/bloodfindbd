@@ -27,6 +27,11 @@ import Donate from './page/Donate';
 import NotFound from './page/NotFound';
 import MyPosts from './page/MyPosts';
 import EditPost from './page/EditPost';
+import AdminLayout from './Dashboard/layouts/AdminLayout';
+import AdminDashboard from './Dashboard/pages/admin/AdminDashboard';
+import AdminUsers from './Dashboard/pages/admin/AdminUsers';
+import AdminBloodRequests from './Dashboard/pages/admin/AdminBloodRequests';
+import AdminRoute from './route/AdminRoute';
 
 
 const router = createBrowserRouter([
@@ -100,6 +105,33 @@ const router = createBrowserRouter([
       },
     ]
   },
+
+  // ADMIN ROUTE
+
+  {
+    element: <AdminRoute />,
+    children: [
+      {
+        path: "/admin",
+        element: <AdminLayout />,
+        children: [
+          {
+            index: true,
+            element: <AdminDashboard />,
+          },
+          {
+            path: "users",
+            element: <AdminUsers />,
+          },
+          {
+            path: "blood-requests",
+            element: <AdminBloodRequests />,
+          },
+        ],
+      },
+    ],
+  },
+
 ]);
 
 

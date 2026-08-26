@@ -1,5 +1,8 @@
 import { Heart, Users, UserRoundPlus, ShieldCheck, Clock, Globe, Sparkles, ArrowRight, Search, BellRing, HandHeart, Droplet, MapPin, Quote, UserPlus } from "lucide-react";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../providers/AuthProviders";
+import { useContext } from "react";
+import HomeSkeleton from "../component/HomeSkeleton";
 
 const stats = [
     { label: "Registered Donors", value: "12,400+" },
@@ -77,7 +80,27 @@ const testimonials = [
     },
 ];
 
- const Home = () => {
+const Home = () => {
+    const { loading } = useContext(AuthContext);
+    if (loading) {
+        return (
+            // <div className="flex min-h-[calc(100vh-3.5rem)] items-center justify-center bg-rose-50">
+
+            //     <div className="flex flex-col items-center gap-3">
+
+            //         <div className="h-10 w-10 animate-spin rounded-full border-4 border-red-100 border-t-red-600" />
+
+            //         <p className="text-sm font-medium text-gray-500">
+            //             Loading account...
+            //         </p>
+
+            //     </div>
+
+            // </div>
+
+            <HomeSkeleton></HomeSkeleton>
+        )
+    }
     return (
         <div className="w-full bg-linear-to-b from-rose-50 via-rose-50/60 to-white">
             {/* ---------- HERO ---------- */}
@@ -351,102 +374,9 @@ const testimonials = [
                     </Link>
                 </div>
             </section>
-           
+
         </div>
     );
 }
 
 export default Home;
-
-// import { Heart, Users, ShieldCheck, Clock, Globe, Sparkles, ArrowRight } from "lucide-react";
-// import { Link } from "react-router-dom";
-
-// export default function Home() {
-//     return (
-//         <div className=" w-full  bg-linear-to-b from-rose-50 via-rose-50/60 to-white">
-//             {/* Decorative background blob */}
-//             <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-105 overflow-hidden">
-//                 <svg
-//                     className="absolute -top-10 left-1/2 w-[140%] -translate-x-1/2"
-//                     viewBox="0 0 1440 400"
-//                     fill="none"
-//                 >
-//                     <path
-//                         d="M0 220C240 300 480 120 720 160C960 200 1200 340 1440 240V0H0V220Z"
-//                         fill="url(#heroGradient)"
-//                         opacity="0.6"
-//                     />
-//                     <defs>
-//                         <linearGradient id="heroGradient" x1="0" y1="0" x2="1440" y2="0" gradientUnits="userSpaceOnUse">
-//                             <stop stopColor="#FDE4E7" />
-//                             <stop offset="1" stopColor="#FBCFD6" />
-//                         </linearGradient>
-//                     </defs>
-//                 </svg>
-//             </div>
-
-//             <section className="relative flex max-w-[1920px] mx-auto md:h-220 sm:h-200 h-250 flex-col items-center justify-center px-6 md:pt-16 pb-20 text-center">
-//                 {/* Eyebrow badge */}
-//                 <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-red-200 bg-white/80 px-4 py-1.5 text-sm font-medium text-gray-700 shadow-sm backdrop-blur">
-//                     <span className="relative flex h-2 w-2">
-//                         <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-500 opacity-75" />
-//                         <span className="relative inline-flex h-2 w-2 rounded-full bg-red-500" />
-//                     </span>
-//                     Live Global Network
-//                     <Globe className="h-4 w-4 text-gray-400" />
-//                 </div>
-
-//                 {/* Headline */}
-//                 <h1 className="text-5xl font-extrabold leading-tight tracking-tight text-gray-900 sm:text-6xl py-6">
-//                     Donate Blood.
-//                     <br />
-//                     <span className="text-red-600">Save Lives.</span>
-//                     <br />
-//                     Instantly.
-//                 </h1>
-
-//                 {/* Subheading */}
-//                 <p className="mt-6 max-w-2xl text-lg text-gray-500">
-//                     Connect with blood donors worldwide through our AI-powered platform.
-//                     Every donation saves up to <span className="font-semibold text-gray-700">3 lives</span>.
-//                 </p>
-
-//                 {/* CTAs */}
-//                 <div className="mt-9 flex flex-col gap-4 sm:flex-row py-5">
-//                     <Link to='/donate-request' className="group inline-flex items-center justify-center gap-2 rounded-full bg-red-600 px-7 py-3.5 font-semibold text-white shadow-lg shadow-red-200 transition hover:bg-red-700">
-//                         <Heart className="h-5 w-5 fill-white" />
-//                         I Need Blood
-//                         <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
-//                     </Link>
-
-//                     <Link to='/donate' className="group inline-flex items-center justify-center gap-2 rounded-full border-2 border-red-200 bg-white px-7 py-3.5 font-semibold text-red-600 transition hover:bg-red-50">
-//                         <Users className="h-5 w-5" />
-//                         I Want to Donate
-//                         <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
-//                     </Link>
-//                 </div>
-
-//                 {/* Trust indicators */}
-//                 <div className="mt-10 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-sm text-gray-500">
-//                     <span className="inline-flex items-center gap-1.5">
-//                         <ShieldCheck className="h-4 w-4 text-emerald-500" />
-//                         100% Secure
-//                     </span>
-//                     <span className="inline-flex items-center gap-1.5">
-//                         <Clock className="h-4 w-4 text-sky-500" />
-//                         24/7 Available
-//                     </span>
-//                     <span className="inline-flex items-center gap-1.5">
-//                         <Globe className="h-4 w-4 text-violet-500" />
-//                         Global Network
-//                     </span>
-//                     <span className="inline-flex items-center gap-1.5">
-//                         <Sparkles className="h-4 w-4 text-amber-400" />
-//                         AI-Powered Matching
-//                     </span>
-//                 </div>
-//             </section>
-
-//         </div>
-//     );
-// }
