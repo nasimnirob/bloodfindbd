@@ -20,6 +20,7 @@ import { MdOutlineManageAccounts } from "react-icons/md";
 import { AuthContext } from "../providers/AuthProviders";
 import toast from "react-hot-toast";
 import { SquarePen } from "lucide-react";
+import ProfileSkeleton from "../component/ProfileSkeleton";
 
 const bloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
 
@@ -44,6 +45,9 @@ const Profile = () => {
 
   const [available, setAvailable] = useState(true);
 
+  const [locationLoading, setLocationLoading] = useState(false);
+  const [currentLocation, setCurrentLocation] = useState(null);
+
   const [form, setForm] = useState({
     name: "",
     phone: "",
@@ -53,6 +57,7 @@ const Profile = () => {
     gender: "",
   });
 
+  console.log(profile)
 
   // FETCH REAL USER PROFILE
 
@@ -74,7 +79,7 @@ const Profile = () => {
         setProfileLoading(true);
         setProfileError(null);
 
-        console.log("PROFILE FETCH START");
+        // console.log("PROFILE FETCH START");
 
         const res = await fetch(
           `${import.meta.env.VITE_API_URL}/users/${encodeURIComponent(
@@ -85,7 +90,7 @@ const Profile = () => {
           }
         );
 
-        console.log("PROFILE STATUS:", res.status);
+        // console.log("PROFILE STATUS:", res.status);
 
         if (!res.ok) {
           if (res.status === 404) {
@@ -97,13 +102,15 @@ const Profile = () => {
 
         const data = await res.json();
 
-        console.log("PROFILE DATA:", data);
+        // console.log("PROFILE DATA:", data);
 
         if (!mounted) return;
 
         setProfile(data);
 
         setAvailable(data.available ?? true);
+
+        setCurrentLocation(data.location || null);
 
         setForm({
           name: data.name || user.displayName || "",
@@ -247,6 +254,174 @@ const Profile = () => {
 
   }, [user?.email, loading]);
 
+
+  // GET CURRENT LOCATION
+
+  const handleGetCurrentLocation = () => {
+    if (!user?.email) {
+      toast.error("User email not found");
+      return;
+    }
+
+    if (!navigator.geolocation) {
+      toast.error("আপনার browser GPS location support করে না");
+      return;
+    }
+
+    setLocationLoading(true);
+
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        try {
+          const lat = position.coords.latitude;
+          const lng = position.coords.longitude;
+
+          console.log("GPS:", lat, lng);
+
+          // Reverse Geocoding
+          const response = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=18&addressdetails=1`,
+            {
+              headers: {
+                Accept: "application/json",
+              },
+            }
+          );
+
+          if (!response.ok) {
+            throw new Error("Reverse geocoding failed");
+          }
+
+          const data = await response.json();
+
+          console.log("Reverse location:", data);
+
+          const address = data.address || {};
+
+          // Area priority
+          const area =
+            address.suburb ||
+            address.neighbourhood ||
+            address.quarter ||
+            address.village ||
+            address.town ||
+            "";
+
+          // District priority
+          const district =
+            address.city_district ||
+            address.district ||
+            address.city ||
+            address.county ||
+            "";
+
+          const locationName = [area, district]
+            .filter(Boolean)
+            .join(", ");
+
+          // Save to MongoDB
+          const res = await fetch(
+            `${import.meta.env.VITE_API_URL}/users/${encodeURIComponent(
+              user.email
+            )}/location`,
+            {
+              method: "PATCH",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                lat,
+                lng,
+                area,
+                district,
+                locationName,
+              }),
+            }
+          );
+
+          if (!res.ok) {
+            throw new Error("Failed to save location");
+          }
+
+          // Update local state
+          setCurrentLocation({
+            lat,
+            lng,
+          });
+
+          setProfile((prev) => ({
+            ...prev,
+            location: {
+              lat,
+              lng,
+            },
+            area,
+            district,
+            locationName,
+            locationUpdatedAt: new Date(),
+          }));
+
+          setForm((prev) => ({
+            ...prev,
+            area,
+            district,
+          }));
+
+          toast.success(
+            locationName
+              ? `Location saved: ${locationName}`
+              : "Current location saved"
+          );
+
+        } catch (error) {
+          console.error("Current location error:", error);
+
+          toast.error(
+            "Location পাওয়া গেছে কিন্তু save করতে সমস্যা হয়েছে"
+          );
+        } finally {
+          setLocationLoading(false);
+        }
+      },
+
+      (error) => {
+        console.error("GPS error:", error);
+
+        setLocationLoading(false);
+
+        switch (error.code) {
+          case error.PERMISSION_DENIED:
+            toast.error(
+              "Location permission allow করুন"
+            );
+            break;
+
+          case error.POSITION_UNAVAILABLE:
+            toast.error(
+              "বর্তমান location পাওয়া যাচ্ছে না"
+            );
+            break;
+
+          case error.TIMEOUT:
+            toast.error(
+              "Location নেওয়ার সময় শেষ হয়ে গেছে"
+            );
+            break;
+
+          default:
+            toast.error(
+              "Location নিতে সমস্যা হয়েছে"
+            );
+        }
+      },
+
+      {
+        enableHighAccuracy: true,
+        timeout: 15000,
+        maximumAge: 0,
+      }
+    );
+  };
 
   // FORM CHANGE
 
@@ -485,65 +660,9 @@ const Profile = () => {
 
   if (profileLoading && !profile) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-rose-50 to-white px-4 pt-10">
 
-        <div className="mx-auto max-w-2xl space-y-4">
+      <ProfileSkeleton></ProfileSkeleton>
 
-          {/* PROFILE SKELETON */}
-
-          <div className="animate-pulse rounded-2xl border border-red-100 bg-white p-6">
-
-            <div className="mx-auto h-24 w-24 rounded-full bg-gray-200" />
-
-            <div className="mx-auto mt-4 h-5 w-32 rounded bg-gray-200" />
-
-            <div className="mx-auto mt-2 h-4 w-44 rounded bg-gray-100" />
-
-            <div className="mt-5 h-12 rounded-xl bg-gray-100" />
-
-          </div>
-
-
-          {/* STATS SKELETON */}
-
-          <div className="grid grid-cols-4 gap-3">
-
-            {Array.from({ length: 4 }).map((_, index) => (
-              <div
-                key={index}
-                className="animate-pulse rounded-2xl border border-red-100 bg-white p-4"
-              >
-                <div className="mx-auto h-6 w-6 rounded bg-gray-200" />
-
-                <div className="mx-auto mt-2 h-5 w-8 rounded bg-gray-200" />
-
-                <div className="mx-auto mt-2 h-3 w-12 rounded bg-gray-100" />
-              </div>
-            ))}
-
-          </div>
-
-
-          {/* INFORMATION SKELETON */}
-
-          <div className="animate-pulse rounded-2xl border border-red-100 bg-white p-6">
-
-            <div className="h-5 w-40 rounded bg-gray-200" />
-
-            <div className="mt-5 space-y-4">
-
-              <div className="h-10 rounded bg-gray-100" />
-              <div className="h-10 rounded bg-gray-100" />
-              <div className="h-10 rounded bg-gray-100" />
-              <div className="h-10 rounded bg-gray-100" />
-
-            </div>
-
-          </div>
-
-        </div>
-
-      </div>
     );
   }
 
@@ -691,7 +810,7 @@ const Profile = () => {
 
           <div className="mt-3 flex flex-wrap items-center justify-center gap-2">
 
-            {user.emailVerified ? (
+            {user.emailVerified || profile.emailVerified === true ? (
 
               <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-3 py-1 text-xs font-medium text-emerald-600">
 
@@ -713,25 +832,32 @@ const Profile = () => {
 
 
           {/* Go to Admin Dashboard */}
-
-            <div className="my-2  text-blue-500">
-              <Link to='/admin' className="underline text-xl">Admin Dashboard</Link>
-            </div>
+          {(profile?.role === "admin" ||
+            profile?.role === "superAdmin") && (
+              <div>
+                <button
+                  onClick={() => navigate("/admin")}
+                  className="cursor-pointer mt-2 text-xl text-blue-500 underline"
+                >
+                  Admin Dashboard
+                </button>
+              </div>
+            )}
 
           {/* Availability */}
 
           <button
             disabled={!profile}
             className={`mt-5 flex w-full items-center justify-between rounded-xl border px-4 py-3 transition ${available
-                ? "border-emerald-200 bg-emerald-50"
-                : "border-gray-200 bg-gray-50"
+              ? "border-emerald-200 bg-emerald-50"
+              : "border-gray-200 bg-gray-50"
               }`}
           >
 
             <span
               className={`text-sm font-semibold ${available
-                  ? "text-emerald-700"
-                  : "text-gray-500"
+                ? "text-emerald-700"
+                : "text-gray-500"
                 }`}
             >
               {available
@@ -742,15 +868,15 @@ const Profile = () => {
             <span
               onClick={handleToggleAvailable}
               className={`relative h-6 w-11 cursor-pointer rounded-full transition ${available
-                  ? "bg-emerald-500"
-                  : "bg-gray-300"
+                ? "bg-emerald-500"
+                : "bg-gray-300"
                 }`}
             >
 
               <span
                 className={`absolute left-0.5 top-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform ${available
-                    ? "translate-x-5"
-                    : "translate-x-0"
+                  ? "translate-x-5"
+                  : "translate-x-0"
                   }`}
               />
 
@@ -777,7 +903,7 @@ const Profile = () => {
 
             {postLoading ? (
 
-              <div className="mx-auto mt-1 h-6 w-8 animate-pulse rounded-md bg-gray-200" />
+              <div className="mx-auto mt-1 h-6 w-8 rounded-md bg-gray-200" />
 
             ) : postError ? (
 
@@ -857,8 +983,8 @@ const Profile = () => {
 
         <div
           className={`rounded-2xl border p-5 shadow-sm ${isEligible
-              ? "border-emerald-200 bg-emerald-50"
-              : "border-amber-200 bg-amber-50"
+            ? "border-emerald-200 bg-emerald-50"
+            : "border-amber-200 bg-amber-50"
             }`}
         >
 
@@ -866,8 +992,8 @@ const Profile = () => {
 
             <HiOutlineCheckCircle
               className={`text-2xl ${isEligible
-                  ? "text-emerald-600"
-                  : "text-amber-600"
+                ? "text-emerald-600"
+                : "text-amber-600"
                 }`}
             />
 
@@ -875,8 +1001,8 @@ const Profile = () => {
 
               <p
                 className={`font-bold ${isEligible
-                    ? "text-emerald-700"
-                    : "text-amber-700"
+                  ? "text-emerald-700"
+                  : "text-amber-700"
                   }`}
               >
                 {isEligible
@@ -1112,6 +1238,99 @@ const Profile = () => {
             ========================= */
 
             <div className="divide-y divide-gray-100">
+
+              {/* CURRENT LOCATION */}
+
+              <div className="mb-5 rounded-2xl border border-red-100 bg-gradient-to-r from-red-50 to-rose-50 p-4">
+
+                <div className="flex items-start gap-3">
+
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-red-100">
+                    <HiOutlineLocationMarker className="text-xl text-red-600" />
+                  </div>
+
+                  <div className="min-w-0 flex-1">
+
+                    <div className="flex items-center justify-between gap-2">
+
+                      <div>
+                        <p className="text-sm font-bold text-gray-900">
+                          Current Location
+                        </p>
+
+                        <p className="mt-0.5 text-xs text-gray-500">
+                          Your Current GPS location
+                        </p>
+                      </div>
+
+                    </div>
+
+                    {/* Location Name */}
+
+                    <div className="mt-3">
+
+                      {profile.locationName ? (
+
+                        <p className="text-sm font-semibold text-gray-800">
+                          {profile.locationName}
+                        </p>
+
+                      ) : profile.area || profile.district ? (
+
+                        <p className="text-sm font-semibold text-gray-800">
+                          {profile.area && profile.district
+                            ? `${profile.area}, ${profile.district}`
+                            : profile.area || profile.district}
+                        </p>
+
+                      ) : (
+
+                        <p className="text-sm text-gray-500">
+                          Location not added
+                        </p>
+
+                      )}
+
+                    </div>
+
+                    {/* Coordinates */}
+
+                    {profile.location?.lat && profile.location?.lng && (
+
+                      <p className="mt-1 text-[11px] text-gray-400">
+                        {profile.location.lat.toFixed(6)},{" "}
+                        {profile.location.lng.toFixed(6)}
+                      </p>
+
+                    )}
+
+                    {/* Get Location Button */}
+
+                    <button
+                      onClick={handleGetCurrentLocation}
+                      disabled={locationLoading}
+                      className="mt-3 inline-flex items-center gap-2 rounded-xl bg-red-600 px-4 py-2 text-xs font-semibold text-white transition hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-60"
+                    >
+
+                      <HiOutlineLocationMarker className="text-base" />
+
+                      {locationLoading
+                        ? "Getting location..."
+                        : profile.location
+                          ? "Update Current Location"
+                          : "Get Current Location"}
+
+                    </button>
+
+                    <p className="mt-2 text-[11px] text-gray-400">
+                      Required to give browser location permission.
+                    </p>
+
+                  </div>
+
+                </div>
+
+              </div>
 
               {/* Email */}
 

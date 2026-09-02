@@ -34,6 +34,25 @@ const TopNavbar = () => {
     const [isSearching, setIsSearching] = useState(false);
     const [searchError, setSearchError] = useState("");
 
+    const searchWrapperRef = useRef(null);
+    const [searchPosition, setSearchPosition] = useState(null);
+
+
+    const handleSearchFocus = () => {
+        if (searchWrapperRef.current) {
+            const rect = searchWrapperRef.current.getBoundingClientRect();
+
+            setSearchPosition({
+                left: rect.left,
+                top: rect.top,
+                width: rect.width,
+            });
+        }
+
+        setIsSearchFocused(true);
+    };
+
+
     useLayoutEffect(() => {
         const updateHeight = () => setNavHeight(navRef.current?.offsetHeight || 0);
         updateHeight();
@@ -99,9 +118,9 @@ const TopNavbar = () => {
 
     return (
         <nav ref={navRef} className=" relative rounded-lg bg-white/80 backdrop-blur-3xl border-gray-200">
-            <div className="relative flex justify-center items-center w-full px-3 sm:px-3 lg:px-3  shadow-sm gap-2 h-14">
+            <div className="relative flex justify-center items-center w-full md:px-0 pl-2  shadow-sm gap-2 h-14">
 
-                <div className="flex-1 flex items-center gap-2 sm:gap-3 min-w-0 w-full ">
+                <div className="flex-1 flex items-center gap-1 min-w-0 w-full ">
 
                     <button
                         onClick={() => setOpen(true)}
@@ -112,7 +131,7 @@ const TopNavbar = () => {
 
                     <NavLink
                         to="/"
-                        className={`flex items-center gap-1.5 shrink-0 overflow-hidden transition-all duration-300 ease-in-out ${isSearchFocused ? "md:max-w-0 md:opacity-0 md:-ml-2" : "max-w-[220px] opacity-100"
+                        className={`flex items-center gap-1.5 shrink-0 overflow-hidden transition-all duration-300 ease-in-out px-3 sm:px-3 lg:px-3 ${isSearchFocused ? "md:max-w-0 md:opacity-0 md:-ml-2" : "max-w-[220px] opacity-100"
                             }`}
                     >
                         {/* <img className="w-8 sm:w-10 lg:w-12 h-auto shrink-0" src={logo} alt="Blood Find Logo" /> */}
@@ -127,83 +146,167 @@ const TopNavbar = () => {
                         </div>
                     </NavLink>
 
-                    <div
+                    {/* <div
                         className={`hidden md:block relative min-w-0 transition-all duration-300 ease-in-out ${isSearchFocused
-                            ? "flex-1 max-w-[280px] lg:max-w-[420px] xl:max-w-[500px]"
-                            : "flex-1 max-w-[160px] lg:max-w-[240px] xl:max-w-[320px]"
+                            ? "flex-1 md:max-w-[500px] "
+                            : "flex-1 md:max-w-[500px] "
                             }`}
+                    > */}
+                    <div
+                        ref={searchWrapperRef}
+                        className={`hidden md:block transition-all duration-300 ease-in-out ${isSearchFocused
+                            ? "fixed z-50"
+                            : "relative flex-1 min-w-0 max-w-[270px]"
+                            }`}
+                        style={
+                            isSearchFocused && searchPosition
+                                ? {
+                                    // left: `${searchPosition.left}px`,
+                                    top: `${searchPosition.top}px`,
+                                    width: "450px",
+                                }
+                                : {}
+                        }
                     >
+                        {/* Search Icon - normal অবস্থায় */}
                         <Search
-                            className={`absolute top-1/2 -translate-y-1/2 left-3 pointer-events-none ${isSearchFocused ? "hidden" : ""
-                                } text-gray-600 w-5 z-10`}
+                            className={`absolute top-1/2 z-50 -translate-y-1/2 left-3 pointer-events-none ${isSearchFocused ? "hidden" : ""
+                                } text-gray-600 w-5`}
                         />
+
                         <div className="flex flex-row gap-3">
+                            {/* Back Button */}
                             <button
-                                onClick={() => searchInputRef.current?.blur()}
-                                className={`${isSearchFocused ? "shrink-0 p-2 rounded-full text-gray-700 hover:bg-gray-100 transition-colors" : "hidden"
+                                type="button"
+                                onMouseDown={(e) => e.preventDefault()}
+                                onClick={() => {
+                                    searchInputRef.current?.blur();
+                                    setIsSearchFocused(false);
+                                }}
+                                className={`${isSearchFocused
+                                    ? "shrink-0 p-2 rounded-full text-gray-700 hover:bg-gray-100 transition-colors z-50"
+                                    : "hidden"
                                     }`}
                             >
                                 <RiArrowLeftLine className="text-xl" />
                             </button>
+
+                            {/* Search Input */}
                             <input
                                 ref={searchInputRef}
                                 value={searchValue}
                                 onChange={(e) => setSearchValue(e.target.value)}
                                 onKeyDown={handleSearchKeyDown}
-                                onFocus={() => setIsSearchFocused(true)}
-                                onBlur={() => setIsSearchFocused(false)}
-                                className={`relative w-full min-w-0 ${isSearchFocused ? "px-3" : "px-9"
-                                    } py-[7px] rounded-full border border-[#eaedf1] bg-[#f7f8f9] text-sm outline-none transition-all duration-200 focus:border-red-300 focus:bg-white focus:ring-2 focus:ring-red-100`}
+                                onFocus={handleSearchFocus}
+                                onBlur={() => {
+                                    // dropdown/card click যেন blur-এর কারণে সাথে সাথে বন্ধ না হয়
+                                    setTimeout(() => {
+                                        if (
+                                            document.activeElement !== searchInputRef.current
+                                        ) {
+                                            setIsSearchFocused(false);
+                                        }
+                                    }, 0);
+                                }}
+                                className={`z-40 relative w-full min-w-0 ${isSearchFocused ? "px-3" : "pl-9 pr-2"
+                                    } py-[7px] rounded-full border border-[#eaedf1] bg-[#f7f8f9] text-sm outline-none transition-all duration-300 ease-out focus:border-red-300 focus:bg-white focus:ring-2 focus:ring-red-100`}
                                 type="search"
                                 placeholder="Search blood group.."
                             />
 
-                            {isSearchFocused && (
+                            {/* Search Dropdown */}
+                            {isSearchFocused && searchPosition && (
                                 <div
                                     onMouseDown={(e) => e.preventDefault()}
-                                    style={{ top: navHeight, maxHeight: `calc(100vh - ${navHeight}px)` }}
-                                    className="fixed left-0 w-[92vw] sm:w-[420px] md:w-[460px] lg:w-[520px] max-w-[520px] overflow-y-auto bg-white shadow-lg z-40"
+                                    style={{
+                                        position: "fixed",
+                                        // left: `${searchPosition.left - 20}px`,
+                                        top: `${navHeight - 57}px`,
+                                        width: "460px",
+                                        maxWidth: "460px",
+                                        
+                                    }}
+                                    className=" bg-white shadow-lg z-30 border border-gray-100"
                                 >
                                     {showingLiveResults ? (
-                                        <div className="p-3">
-                                            {isSearching ? (
-                                                <div className="space-y-2">
-                                                    {[1, 2, 3].map((i) => (
-                                                        <div key={i} className="h-16 animate-pulse rounded-xl bg-gray-100" />
-                                                    ))}
-                                                </div>
-                                            ) : searchError ? (
-                                                <p className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-600">
-                                                    {searchError}
-                                                </p>
-                                            ) : liveResults.length === 0 ? (
-                                                <div className="flex flex-col items-center py-8 text-center">
-                                                    <RiSearchLine className="mb-2 text-2xl text-gray-300" />
-                                                    <p className="text-sm text-gray-500">No available donor</p>
-                                                    <p className="text-xs text-gray-400">Please Try to Search another blood group, name, district..</p>
-                                                </div>
-                                            ) : (
-                                                <div className="space-y-2">
-                                                    {liveResults.slice(0, 5).map((donor) => (
-                                                        <DonorCard key={donor._id || donor.email} donor={donor} />
-                                                    ))}
-                                                    {liveResults.length > 5 && (
-                                                        <button
-                                                            onMouseDown={() => runSearch(searchValue)}
-                                                            className="w-full rounded-lg py-2 text-center text-sm font-semibold text-red-600 hover:bg-red-50"
-                                                        >
-                                                            All {liveResults.length} donor See →
-                                                        </button>
-                                                    )}
-                                                </div>
-                                            )}
+                                        <div className="flex flex-col  bg-white">
+                                            {/* Fixed Header */}
+                                            <div className="h-15 shrink-0 bg-white">
+                                                {/* Header content */}
+                                            </div>
+
+                                            {/* Only this part will scroll */}
+                                            <div
+                                            style={
+                                                {
+                                                    maxHeight: `calc(100vh - ${navHeight}px)`,
+                                                }
+                                            }
+                                            className="min-h-0 flex-1 overflow-y-auto p-3">
+                                                {isSearching ? (
+                                                    <div className="space-y-2">
+                                                        {[1, 2, 3].map((i) => (
+                                                            <div
+                                                                key={i}
+                                                                className="h-16 animate-pulse rounded-xl bg-gray-100"
+                                                            />
+                                                        ))}
+                                                    </div>
+                                                ) : searchError ? (
+                                                    <p className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-600">
+                                                        {searchError}
+                                                    </p>
+                                                ) : liveResults.length === 0 ? (
+                                                    <div className="flex flex-col items-center py-8 text-center">
+                                                        <RiSearchLine className="mb-2 text-2xl text-gray-300" />
+
+                                                        <p className="text-sm text-gray-500">
+                                                            No available donor
+                                                        </p>
+
+                                                        <p className="text-xs text-gray-400">
+                                                            Please Try to Search another blood group,
+                                                            name, district..
+                                                        </p>
+                                                    </div>
+                                                ) : (
+                                                    <div className="space-y-2">
+                                                        {liveResults.slice(0, 5).map((donor) => (
+                                                            <DonorCard
+                                                                key={donor._id || donor.email}
+                                                                donor={donor}
+                                                            />
+                                                        ))}
+
+                                                        {liveResults.length > 5 && (
+                                                            <button
+                                                                type="button"
+                                                                onMouseDown={(e) => {
+                                                                    e.preventDefault();
+                                                                    runSearch(searchValue);
+                                                                }}
+                                                                className="w-full rounded-lg py-2 text-center text-sm font-semibold text-red-600 hover:bg-red-50"
+                                                            >
+                                                                All {liveResults.length} donor See →
+                                                            </button>
+                                                        )}
+                                                    </div>
+                                                )}
+                                            </div>
                                         </div>
+
                                     ) : (
                                         <>
-                                            <div className="flex items-center justify-between px-4 pt-3 pb-1">
-                                                <p className="font-semibold text-gray-900">Recent</p>
+                                            {/* Recent Header */}
+                                            <div className="flex items-center justify-between px-4 pt-3 pb-1 mt-20">
+                                                <p className="font-semibold text-gray-900">
+                                                    Recent
+                                                </p>
+
                                                 {recentSearches.length > 0 && (
                                                     <button
+                                                        type="button"
+                                                        onMouseDown={(e) => e.preventDefault()}
                                                         onClick={clearRecentSearches}
                                                         className="text-sm text-blue-600 font-medium hover:underline"
                                                     >
@@ -212,6 +315,7 @@ const TopNavbar = () => {
                                                 )}
                                             </div>
 
+                                            {/* Recent Searches */}
                                             <div className="pb-2">
                                                 {recentSearches.length === 0 && (
                                                     <p className="px-4 py-6 text-sm text-gray-400 text-center">
@@ -222,13 +326,17 @@ const TopNavbar = () => {
                                                 {recentSearches.map((item) => (
                                                     <div
                                                         key={item.id}
-                                                        onClick={() => handleRecentSearchClick(item.name)}
+                                                        onMouseDown={(e) => e.preventDefault()}
+                                                        onClick={() =>
+                                                            handleRecentSearchClick(item.name)
+                                                        }
                                                         className="flex items-center justify-between px-4 py-2.5 hover:bg-gray-50 transition-colors cursor-pointer"
                                                     >
                                                         <div className="flex items-center gap-3 min-w-0">
                                                             <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center shrink-0">
                                                                 <IoTimeOutline className="text-gray-500 text-xl" />
                                                             </div>
+
                                                             <div className="min-w-0">
                                                                 <p className="text-sm font-semibold text-gray-900 truncate">
                                                                     {item.name}
@@ -237,6 +345,10 @@ const TopNavbar = () => {
                                                         </div>
 
                                                         <button
+                                                            type="button"
+                                                            onMouseDown={(e) =>
+                                                                e.preventDefault()
+                                                            }
                                                             onClick={(e) => {
                                                                 e.stopPropagation();
                                                                 removeRecentSearch(item.id);
@@ -254,6 +366,7 @@ const TopNavbar = () => {
                             )}
                         </div>
                     </div>
+
                 </div>
 
                 <div className="md:flex items-center justify-center hidden">
@@ -360,7 +473,7 @@ const TopNavbar = () => {
                     </div>
                 </div>
 
-                <div className="lg:flex-1 md:flex flex items-center justify-end gap-1.5 shrink-0">
+                <div className="lg:flex-1 md:flex flex items-center justify-end gap-1.5 shrink-0 md:pr-2 pr-0">
                     <div className="flex">
                         {loading ? (
                             <div className=" w-20 h-8 bg-gray-200 rounded-full animate-pulse"></div>
@@ -524,7 +637,7 @@ const TopNavbar = () => {
                                 <span className="ms-2">Create Blood Request</span>
                             </NavLink>
                         </li>
-                        <li>
+                        {/* <li>
                             <NavLink
                                 to="/admin/login"
                                 onClick={() => setOpen(false)}
@@ -538,7 +651,7 @@ const TopNavbar = () => {
                                 <CiLogout />
                                 <span className="ms-2 whitespace-nowrap">Log Out</span>
                             </NavLink>
-                        </li>
+                        </li> */}
                     </ul>
                 </div>
             </div>

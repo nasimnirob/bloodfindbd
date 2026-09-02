@@ -432,25 +432,76 @@ const Donate = () => {
         return () => controller.abort();
     }, [bloodGroup, district]);
 
-    const handleEnableNearMe = () => {
+    // const handleEnableNearMe = () => {
+    //     setLocationError("");
+    //     if (!navigator.geolocation) {
+    //         setLocationError("তোমার ব্রাউজার লোকেশন সাপোর্ট করে না");
+    //         return;
+    //     }
+    //     setLocating(true);
+    //     navigator.geolocation.getCurrentPosition(
+    //         (pos) => {
+    //             setUserCoords({ lat: pos.coords.latitude, lng: pos.coords.longitude });
+    //             setNearMe(true);
+    //             setLocating(false);
+    //         },
+    //         () => {
+    //             setLocationError("লোকেশন পাওয়া যায়নি — permission দিয়েছো কিনা চেক করো");
+    //             setLocating(false);
+    //         }
+    //     );
+    // };
+
+
+    const handleEnableNearMe = async () => {
         setLocationError("");
+
         if (!navigator.geolocation) {
             setLocationError("তোমার ব্রাউজার লোকেশন সাপোর্ট করে না");
             return;
         }
+
+        try {
+            const permission = await navigator.permissions.query({
+                name: "geolocation",
+            });
+
+            if (permission.state === "denied") {
+                setLocationError(
+                    "Location permission blocked আছে। Browser Settings থেকে Location → Allow করে আবার চেষ্টা করো।"
+                );
+                return;
+            }
+        } catch (err) {
+            console.log(err);
+        }
+
         setLocating(true);
+
         navigator.geolocation.getCurrentPosition(
             (pos) => {
-                setUserCoords({ lat: pos.coords.latitude, lng: pos.coords.longitude });
+                setUserCoords({
+                    lat: pos.coords.latitude,
+                    lng: pos.coords.longitude,
+                });
+
                 setNearMe(true);
                 setLocating(false);
             },
-            () => {
-                setLocationError("লোকেশন পাওয়া যায়নি — permission দিয়েছো কিনা চেক করো");
+            (error) => {
                 setLocating(false);
+
+                if (error.code === error.PERMISSION_DENIED) {
+                    setLocationError(
+                        "Location permission blocked আছে। Browser Settings থেকে Location → Allow করে আবার চেষ্টা করো।"
+                    );
+                } else {
+                    setLocationError("লোকেশন পাওয়া যায়নি। আবার চেষ্টা করো।");
+                }
             }
         );
     };
+
 
     // Client-side: attach distance to each request, then filter/sort by it when "near me" is active
     const visibleRequests = useMemo(() => {
@@ -481,7 +532,7 @@ const Donate = () => {
             <div className="mx-auto max-w-[700px] px-4 pb-5 pt-6">
                 {/* Header */}
                 <div className="mb-4 text-center">
-                    <h1 className="text-2xl font-extrabold text-gray-900">I Want to Donate</h1>
+                    {/* <h1 className="text-2xl font-extrabold text-gray-900">I Want to Donate</h1> */}
                     <p className="mt-1 text-sm text-gray-500">
                         {user?.displayName ? `${user.displayName.split(" ")[0]}, ` : ""}
                         “রক্ত দাও, জীবন বাঁচাও—মানবতার পাশে দাঁড়াও।”
@@ -493,8 +544,8 @@ const Donate = () => {
                     <button
                         onClick={() => setFiltersOpen((prev) => !prev)}
                         className={`flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold transition ${filtersOpen || activeFilterCount > 0
-                                ? "border-red-200 bg-red-50 text-red-600"
-                                : "border-gray-200 bg-white text-gray-600 hover:bg-gray-50"
+                            ? "border-red-200 bg-red-50 text-red-600"
+                            : "border-gray-200 bg-white text-gray-600 hover:bg-gray-50"
                             }`}
                     >
                         <RiEqualizerLine />
@@ -563,8 +614,8 @@ const Donate = () => {
                                             key={bg}
                                             onClick={() => setBloodGroup(active ? "" : bg)}
                                             className={`rounded-lg py-2 text-sm font-bold transition ${active
-                                                    ? "bg-red-600 text-white shadow-sm"
-                                                    : "bg-gray-50 text-gray-600 ring-1 ring-gray-200 hover:bg-red-50 hover:text-red-600"
+                                                ? "bg-red-600 text-white shadow-sm"
+                                                : "bg-gray-50 text-gray-600 ring-1 ring-gray-200 hover:bg-red-50 hover:text-red-600"
                                                 }`}
                                         >
                                             {bg}
@@ -600,7 +651,7 @@ const Donate = () => {
                                     className="flex items-center gap-2 rounded-lg border border-gray-200 bg-gray-50 px-4 py-2.5 text-sm font-semibold text-gray-700 transition hover:bg-gray-100 disabled:opacity-60"
                                 >
                                     <RiNavigationLine className="text-red-600" />
-                                    {locating ? "লোকেশন নেওয়া হচ্ছে..." : "আমার কাছাকাছি খুঁজো"}
+                                    {locating ? "লোকেশন নেওয়া হচ্ছে..." : "তোমার কাছাকাছি খুঁজো"}
                                 </button>
                             ) : (
                                 <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-3">
@@ -621,8 +672,8 @@ const Donate = () => {
                                                 key={r}
                                                 onClick={() => setRadiusKm(r)}
                                                 className={`rounded-full px-3 py-1 text-xs font-semibold transition ${radiusKm === r
-                                                        ? "bg-emerald-600 text-white"
-                                                        : "bg-white text-emerald-700 ring-1 ring-emerald-200"
+                                                    ? "bg-emerald-600 text-white"
+                                                    : "bg-white text-emerald-700 ring-1 ring-emerald-200"
                                                     }`}
                                             >
                                                 {r} km
@@ -643,7 +694,7 @@ const Donate = () => {
                 {isLoading ? (
                     <div className="space-y-3">
                         {[1, 2, 3].map((i) => (
-                            <div key={i} className="h-28 animate-pulse rounded-2xl bg-white/70 shadow-sm" />
+                            <div key={i} className="h-28 rounded-2xl bg-white/70 shadow-sm" />
                         ))}
                     </div>
                 ) : error ? (

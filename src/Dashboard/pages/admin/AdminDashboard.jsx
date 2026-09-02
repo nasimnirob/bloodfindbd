@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
 import StatCard from "../../components/admin/StatCard";
+import { MdBloodtype, MdCancel, MdPeopleOutline } from "react-icons/md";
+import { PiDropDuotone } from "react-icons/pi";
+import { BiDonateHeart } from "react-icons/bi";
+import { IoIosDoneAll } from "react-icons/io";
 
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -34,20 +38,20 @@ const AdminDashboard = () => {
     if (loading) {
         return (
             <div className="space-y-6">
-                <div className="h-8 w-48 animate-pulse rounded bg-gray-200" />
+                <div className="h-8 w-48 skeleton rounded bg-gray-200" />
 
                 <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
                     {[1, 2, 3, 4, 5, 6].map((item) => (
                         <div
                             key={item}
-                            className="h-32 animate-pulse rounded-2xl bg-gray-200"
+                            className="h-32 skeleton rounded-2xl bg-gray-200"
                         />
                     ))}
                 </div>
 
                 <div className="grid gap-6 lg:grid-cols-2">
-                    <div className="h-80 animate-pulse rounded-2xl bg-gray-200" />
-                    <div className="h-80 animate-pulse rounded-2xl bg-gray-200" />
+                    <div className="h-80 skeleton rounded-2xl bg-gray-200" />
+                    <div className="h-80 skeleton rounded-2xl bg-gray-200" />
                 </div>
             </div>
         );
@@ -85,42 +89,42 @@ const AdminDashboard = () => {
                 <StatCard
                     title="Total Users"
                     value={stats.totalUsers}
-                    icon="👥"
+                    icon= {<MdPeopleOutline></MdPeopleOutline>}
                     description="Registered users"
                 />
 
                 <StatCard
                     title="Available Donors"
                     value={stats.totalDonors}
-                    icon="🩸"
+                    icon={<PiDropDuotone></PiDropDuotone>}
                     description="Currently available"
                 />
 
                 <StatCard
                     title="Blood Requests"
                     value={stats.totalRequests}
-                    icon="📋"
+                    icon={<BiDonateHeart></BiDonateHeart>}
                     description="Total requests"
                 />
 
                 <StatCard
                     title="Open Requests"
                     value={stats.openRequests}
-                    icon="🔴"
+                    icon={<MdBloodtype></MdBloodtype>}
                     description="Need attention"
                 />
 
                 <StatCard
                     title="Fulfilled"
                     value={stats.fulfilledRequests}
-                    icon="✅"
+                    icon={<IoIosDoneAll></IoIosDoneAll>}
                     description="Successfully completed"
                 />
 
                 <StatCard
                     title="Cancelled"
                     value={stats.cancelledRequests}
-                    icon="❌"
+                    icon={<MdCancel></MdCancel>}
                     description="Cancelled requests"
                 />
             </div>

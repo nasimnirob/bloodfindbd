@@ -19,13 +19,13 @@ const EditPostSkeleton = () => {
 
         <div className="mb-5 flex items-center gap-3">
 
-          <div className="h-10 w-10 animate-pulse rounded-xl bg-gray-200" />
+          <div className="h-10 w-10 skeleton rounded-xl bg-gray-200" />
 
           <div className="space-y-2">
 
-            <div className="h-5 w-36 animate-pulse rounded bg-gray-200" />
+            <div className="h-5 w-36 skeleton rounded bg-gray-200" />
 
-            <div className="h-4 w-48 animate-pulse rounded bg-gray-200" />
+            <div className="h-4 w-48 skeleton rounded bg-gray-200" />
 
           </div>
 
@@ -40,9 +40,9 @@ const EditPostSkeleton = () => {
 
           <div className="space-y-2">
 
-            <div className="h-4 w-28 animate-pulse rounded bg-gray-200" />
+            <div className="h-4 w-28 skeleton rounded bg-gray-200" />
 
-            <div className="h-12 w-full animate-pulse rounded-xl bg-gray-100" />
+            <div className="h-12 w-full skeleton rounded-xl bg-gray-100" />
 
           </div>
 
@@ -51,9 +51,9 @@ const EditPostSkeleton = () => {
 
           <div className="space-y-2">
 
-            <div className="h-4 w-32 animate-pulse rounded bg-gray-200" />
+            <div className="h-4 w-32 skeleton rounded bg-gray-200" />
 
-            <div className="h-24 w-full animate-pulse rounded-xl bg-gray-100" />
+            <div className="h-24 w-full skeleton rounded-xl bg-gray-100" />
 
           </div>
 
@@ -64,17 +64,17 @@ const EditPostSkeleton = () => {
 
             <div className="space-y-2">
 
-              <div className="h-4 w-24 animate-pulse rounded bg-gray-200" />
+              <div className="h-4 w-24 skeleton rounded bg-gray-200" />
 
-              <div className="h-12 w-full animate-pulse rounded-xl bg-gray-100" />
+              <div className="h-12 w-full skeleton rounded-xl bg-gray-100" />
 
             </div>
 
             <div className="space-y-2">
 
-              <div className="h-4 w-24 animate-pulse rounded bg-gray-200" />
+              <div className="h-4 w-24 skeleton rounded bg-gray-200" />
 
-              <div className="h-12 w-full animate-pulse rounded-xl bg-gray-100" />
+              <div className="h-12 w-full skeleton rounded-xl bg-gray-100" />
 
             </div>
 
@@ -87,17 +87,17 @@ const EditPostSkeleton = () => {
 
             <div className="space-y-2">
 
-              <div className="h-4 w-20 animate-pulse rounded bg-gray-200" />
+              <div className="h-4 w-20 skeleton rounded bg-gray-200" />
 
-              <div className="h-12 w-full animate-pulse rounded-xl bg-gray-100" />
+              <div className="h-12 w-full skeleton rounded-xl bg-gray-100" />
 
             </div>
 
             <div className="space-y-2">
 
-              <div className="h-4 w-16 animate-pulse rounded bg-gray-200" />
+              <div className="h-4 w-16 skeleton rounded bg-gray-200" />
 
-              <div className="h-12 w-full animate-pulse rounded-xl bg-gray-100" />
+              <div className="h-12 w-full skeleton rounded-xl bg-gray-100" />
 
             </div>
 
@@ -108,9 +108,9 @@ const EditPostSkeleton = () => {
 
           <div className="space-y-2">
 
-            <div className="h-4 w-20 animate-pulse rounded bg-gray-200" />
+            <div className="h-4 w-20 skeleton rounded bg-gray-200" />
 
-            <div className="h-12 w-full animate-pulse rounded-xl bg-gray-100" />
+            <div className="h-12 w-full skeleton rounded-xl bg-gray-100" />
 
           </div>
 
@@ -119,9 +119,9 @@ const EditPostSkeleton = () => {
 
           <div className="space-y-2">
 
-            <div className="h-4 w-28 animate-pulse rounded bg-gray-200" />
+            <div className="h-4 w-28 skeleton rounded bg-gray-200" />
 
-            <div className="h-12 w-full animate-pulse rounded-xl bg-gray-100" />
+            <div className="h-12 w-full skeleton rounded-xl bg-gray-100" />
 
           </div>
 
@@ -130,9 +130,9 @@ const EditPostSkeleton = () => {
 
           <div className="space-y-2">
 
-            <div className="h-4 w-20 animate-pulse rounded bg-gray-200" />
+            <div className="h-4 w-20 skeleton rounded bg-gray-200" />
 
-            <div className="h-12 w-full animate-pulse rounded-xl bg-gray-100" />
+            <div className="h-12 w-full skeleton rounded-xl bg-gray-100" />
 
           </div>
 
@@ -141,9 +141,9 @@ const EditPostSkeleton = () => {
 
           <div className="space-y-2">
 
-            <div className="h-4 w-24 animate-pulse rounded bg-gray-200" />
+            <div className="h-4 w-24 skeleton rounded bg-gray-200" />
 
-            <div className="h-12 w-full animate-pulse rounded-xl bg-gray-100" />
+            <div className="h-12 w-full skeleton rounded-xl bg-gray-100" />
 
           </div>
 
@@ -152,9 +152,9 @@ const EditPostSkeleton = () => {
 
           <div className="space-y-2">
 
-            <div className="h-4 w-16 animate-pulse rounded bg-gray-200" />
+            <div className="h-4 w-16 skeleton rounded bg-gray-200" />
 
-            <div className="h-24 w-full animate-pulse rounded-xl bg-gray-100" />
+            <div className="h-24 w-full skeleton rounded-xl bg-gray-100" />
 
           </div>
 
@@ -163,9 +163,9 @@ const EditPostSkeleton = () => {
 
           <div className="flex gap-3 pt-2">
 
-            <div className="h-12 flex-1 animate-pulse rounded-xl bg-gray-100" />
+            <div className="h-12 flex-1 skeleton rounded-xl bg-gray-100" />
 
-            <div className="h-12 flex-1 animate-pulse rounded-xl bg-red-100" />
+            <div className="h-12 flex-1 skeleton rounded-xl bg-red-100" />
 
           </div>
 

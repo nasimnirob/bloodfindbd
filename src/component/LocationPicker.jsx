@@ -121,17 +121,49 @@ const LocationPicker = ({ value, onChange }) => {
         reverseGeocode(lat, lng);
     };
 
-    const useCurrentLocation = () => {
+    // const useCurrentLocation = () => {
+    //     if (!navigator.geolocation) return;
+    //     navigator.geolocation.getCurrentPosition(
+    //         (pos) => {
+    //             const { latitude, longitude } = pos.coords;
+    //             setPosition([latitude, longitude]);
+    //             reverseGeocode(latitude, longitude);
+    //         },
+    //         () => {
+    //             // user denied permission or GPS unavailable — silently ignore,
+    //             // they can still search or click the map manually
+    //         }
+    //     );
+    // };
+
+    const useCurrentLocation = async () => {
         if (!navigator.geolocation) return;
+
+        try {
+            const permission = await navigator.permissions.query({
+                name: "geolocation",
+            });
+
+            if (permission.state === "denied") {
+                // Browser blocked the permission
+                setLocationError?.(
+                    "Location permission blocked. Browser settings থেকে Location → Allow করুন।"
+                );
+                return;
+            }
+        } catch (error) {
+            console.log(error);
+        }
+
         navigator.geolocation.getCurrentPosition(
             (pos) => {
                 const { latitude, longitude } = pos.coords;
+
                 setPosition([latitude, longitude]);
                 reverseGeocode(latitude, longitude);
             },
-            () => {
-                // user denied permission or GPS unavailable — silently ignore,
-                // they can still search or click the map manually
+            (error) => {
+                console.log(error);
             }
         );
     };
